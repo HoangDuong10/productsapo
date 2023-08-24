@@ -6,27 +6,37 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.product.adapter.OrderAdapter
-import com.example.product.databinding.ActivityCreateOrderBinding
-import com.example.product.listense.IClickItemOrder
-import com.example.product.model.Variants
-import com.example.product.ui.selectvariant.SelectVariantActivity
-import com.example.product.utils.GlobalFuntion
-import kotlin.math.roundToInt
+import com.example.product.R
+import com.example.product.converter.OrderConverter
 
-class CreateOrderActivity : AppCompatActivity() {
-    private var listVariant: MutableList<Variants>? = null
+import com.example.product.converter.VariantConverter
+import com.example.product.ui.adapter.OrderAdapter
+import com.example.product.databinding.ActivityCreateOrderBinding
+import com.example.product.api.dto.OrderSource
+import com.example.product.ui.model.Order
+import com.example.product.ui.model.OrderLineItem
+import com.example.product.ui.model.Variant
+import com.example.product.presenter.CreateOrderPresenter
+import com.example.product.api.response.OrderResponse
+import com.example.product.ui.selectvariant.SelectVariantActivity
+import com.example.product.utils.NumberUtil.formatNoTrailingZero
+
+class CreateOrderActivity : AppCompatActivity(),CreateOrderContracts {
+    private var listOrderSource: MutableList<OrderSource>?=null
+    private var listVariant: MutableList<Variant>? = null
     private lateinit var binding: ActivityCreateOrderBinding
-    val startForResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+    private lateinit var createOrderPresenter: CreateOrderPresenter
+    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val intent = result.data
-                listVariant = intent?.getSerializableExtra("list_variant") as? ArrayList<Variants>
+                listVariant = intent?.getSerializableExtra(SelectVariantActivity.KEY_LISTVARIANT) as? ArrayList<Variant>
                 disPlayListOrder()
+                displayButton()
                 showInfoOrder()
             }
         }
@@ -35,60 +45,94 @@ class CreateOrderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateOrderBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        createOrderPresenter= CreateOrderPresenter(this)
         goToSelectVariant()
         backPressed()
+        displayButton()
+        postData()
+    }
+
+    override fun callApiError() {
+        Toast.makeText(this,getString(R.string.call_api_khong_thanh_cong),Toast.LENGTH_SHORT).show()
+    }
+
+    override fun callAPiSuccuss() {
+        Toast.makeText(this,getString(R.string.call_api_thanh_cong),Toast.LENGTH_SHORT).show()
+    }
+
+    override fun callListSourceId(orderSource: MutableList<OrderSource>) {
+        listOrderSource=orderSource
     }
 
     fun goToSelectVariant() {
-        binding.layoutAddOrder.setOnClickListener {
-            var intent = Intent(this, SelectVariantActivity::class.java)
+        binding.llCreateOrderAddOrder.setOnClickListener {
+            val intent = Intent(this, SelectVariantActivity::class.java)
+            startForResult.launch(intent)
+        }
+        binding.tvCreateOrderSearch.setOnClickListener{
+            val intent = Intent(this, SelectVariantActivity::class.java)
             startForResult.launch(intent)
         }
     }
 
-    fun disPlayListOrder() {
-        binding.layoutAddOrder.visibility = View.GONE
-        var linearLayoutManager = LinearLayoutManager(this)
-        binding.rcvOrder.layoutManager = linearLayoutManager
-        var dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        binding.rcvOrder.addItemDecoration(dividerItemDecoration)
-        var adapter = listVariant?.let {
-            OrderAdapter(it, object : IClickItemOrder {
-                override fun onClickItemOrder(variant: Variants) {
-                    variant.total = variant.total!! + 1
-                    binding.tvTotal.text =
-                        (binding.tvTotal.text.toString().toFloat() + 1).toString()
-                    showInfoOrder()
-                }
-
-            },this)
+    private fun disPlayListOrder() {
+        binding.llCreateOrderAddOrder.visibility = View.GONE
+        val linearLayoutManager = LinearLayoutManager(this)
+        binding.rclvCreateOrder.layoutManager = linearLayoutManager
+        val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        binding.rclvCreateOrder.addItemDecoration(dividerItemDecoration)
+        val adapter = listVariant?.let {
+            OrderAdapter(it, this)
         }
-        binding.rcvOrder.adapter = adapter
+        binding.rclvCreateOrder.adapter = adapter
+        adapter?.onClickItemOrder={
+            showInfoOrder()
+            displayButton()
+        }
 
     }
 
-    fun showInfoOrder() {
-        var countTax = 0
-        var countTotal = 0f
-        var countTotalAmount = 0f
-        for (i in 0 until listVariant!!.size) {
-            countTotal += listVariant!![i].total!!
-            for (j in 0 until listVariant!![i].variant_prices.size) {
-                if (listVariant!![i].variant_prices[j].price_list.code.equals("BANLE")) {
-                    countTax += ((listVariant!![i].output_vat_rate / 100) * (listVariant!![i].variant_prices[j].value * listVariant!![i].total!!)).roundToInt()
-                    countTotalAmount += (listVariant!![i].variant_prices[j].value * listVariant!![i].total!!)
-                    break
-                }
-            }
+    private fun showInfoOrder() {
+        val countTax = listVariant?.sumOf { it.getTotalTaxOneOrder() }
+        val countTotal = listVariant?.sumOf { it.total!!}
+        val totalAmount = listVariant?.sumOf { it.getTotalAmountOneOrder() }
+        val totalMoney=listVariant?.sumOf { it.getTotalMoney() }
+        if(listVariant!!.all{ !it.taxable }){
+            binding.rlCreateOrderTax.visibility=View.GONE
         }
-        binding.tvTax.text = countTax.toString()
-        binding.tvTotal.text = GlobalFuntion.removeDecimal(countTotal)
-        binding.tvTotalAmount.text = GlobalFuntion.removeDecimal(countTotalAmount)
+        binding.tvCreateOrderTax.text = countTax?.formatNoTrailingZero()
+        binding.tvCreateOrderTotal.text = countTotal?.formatNoTrailingZero()
+        binding.tvCreateOrderTotalAmount.text = totalAmount?.formatNoTrailingZero()
+        binding.tvCreateOrderTotalMoney.text=totalMoney?.formatNoTrailingZero()
     }
-
-    fun backPressed() {
-        binding.imgLeft.setOnClickListener {
+    private fun backPressed() {
+        binding.ivCreateOrderLeft.setOnClickListener {
             finish()
         }
     }
+    private fun postData(){
+        createOrderPresenter.getSourceId()
+        binding.btnCreateOrder.setOnClickListener{
+            val orderLineItem =VariantConverter.toModelListOrderLineItem(listVariant as MutableList<Variant>)
+            val order= Order(listOrderSource!![0].id,"draft", orderLineItem as MutableList<OrderLineItem>)
+            val orderDTO= OrderConverter.toDTO(order)
+            val orderResponse= OrderResponse(orderDTO)
+            Log.d("aaa",""+orderResponse.order!!.orderLineItems.size)
+            createOrderPresenter.postOrder(orderResponse)
+        }
+
+    }
+    private fun displayButton(){
+        if(listVariant.isNullOrEmpty()){
+            binding.llCreateOrderAddOrder.visibility = View.VISIBLE
+            binding.btnCreateOrder.alpha=0.5f
+            binding.btnCreateOrder.isEnabled=false
+        }else{
+            binding.llCreateOrderAddOrder.visibility = View.GONE
+            binding.btnCreateOrder.alpha=1f
+            binding.btnCreateOrder.isEnabled=true
+        }
+    }
+
+
 }

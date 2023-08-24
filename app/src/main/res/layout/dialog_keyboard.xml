@@ -13,20 +13,22 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:textSize="@dimen/text_size_normal"/>
+
+   <TextView
+       android:id="@+id/tvDialogKeybordTotal"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:gravity="center"
+       android:textColor="@color/black"
+       android:textSize="@dimen/text_size_normal" />
+
    <RelativeLayout
        android:layout_margin="@dimen/define_dimen_12"
        android:layout_width="match_parent"
        android:layout_height="wrap_content">
-      <TextView
-          android:id="@+id/tv_total"
-          android:gravity="center"
-          android:textColor="@color/black"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:textSize="@dimen/text_size_normal"/>
 
       <ImageView
-          android:id="@+id/img_clear"
+          android:id="@+id/ivDialogKeyBoardClear"
           android:layout_width="14dp"
           android:layout_height="13dp"
           android:layout_alignParentRight="true"
@@ -40,17 +42,16 @@
       <TableRow >
          <androidx.appcompat.widget.AppCompatButton
              android:text="1"
-             android:id="@+id/tv_1"
+             android:id="@+id/btnDialogBoard1"
              android:gravity="center"
              android:padding="@dimen/define_dimen_8"
-
              android:layout_weight="3"
              android:layout_column="1"
              android:background="@drawable/table_divider"
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
          <androidx.appcompat.widget.AppCompatButton  android:text="2"
-             android:id="@+id/tv_2"
+             android:id="@+id/btnDialogBoard2"
              android:gravity="center"
              android:padding="@dimen/define_dimen_8"
              android:layout_weight="3"
@@ -59,7 +60,7 @@
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
          <androidx.appcompat.widget.AppCompatButton  android:text="3"
-             android:id="@+id/tv_3"
+             android:id="@+id/btnDialogBoard3"
              android:layout_column="3"
              android:layout_weight="3"
              android:gravity="center"
@@ -70,7 +71,7 @@
       </TableRow>
       <TableRow >
          <androidx.appcompat.widget.AppCompatButton  android:text="4"
-             android:id="@+id/tv_4"
+             android:id="@+id/btnDialogBoard4"
              android:gravity="center"
              android:layout_column="1"
              android:layout_weight="3"
@@ -79,7 +80,7 @@
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
          <androidx.appcompat.widget.AppCompatButton  android:text="5"
-             android:id="@+id/tv_5"
+             android:id="@+id/btnDialogBoard5"
              android:gravity="center"
              android:padding="@dimen/define_dimen_8"
              android:layout_column="2"
@@ -88,7 +89,7 @@
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
          <androidx.appcompat.widget.AppCompatButton  android:text="6"
-             android:id="@+id/tv_6"
+             android:id="@+id/btnDialogBoard6"
              android:gravity="center"
              android:padding="@dimen/define_dimen_8"
              android:layout_weight="3"
@@ -99,7 +100,7 @@
       </TableRow>
       <TableRow >
          <androidx.appcompat.widget.AppCompatButton  android:text="7"
-             android:id="@+id/tv_7"
+             android:id="@+id/btnDialogBoard7"
              android:gravity="center"
              android:layout_column="1"
              android:padding="@dimen/define_dimen_8"
@@ -108,7 +109,7 @@
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
          <androidx.appcompat.widget.AppCompatButton  android:text="8"
-             android:id="@+id/tv_8"
+             android:id="@+id/btnDialogBoard8"
              android:gravity="center"
              android:layout_column="2"
              android:layout_weight="3"
@@ -117,7 +118,7 @@
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
          <androidx.appcompat.widget.AppCompatButton  android:text="9"
-             android:id="@+id/tv_9"
+             android:id="@+id/btnDialogBoard9"
              android:gravity="center"
              android:layout_column="3"
              android:padding="@dimen/define_dimen_8"
@@ -128,6 +129,7 @@
       </TableRow>
       <TableRow >
          <androidx.appcompat.widget.AppCompatButton  android:text="."
+             android:id="@+id/btnDialogBoardDot"
              android:gravity="center"
              android:padding="@dimen/define_dimen_8"
              android:layout_column="1"
@@ -136,7 +138,7 @@
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
          <androidx.appcompat.widget.AppCompatButton  android:text="0"
-             android:id="@+id/tv_0"
+             android:id="@+id/btnDialogBoard0"
              android:gravity="center"
              android:layout_weight="3"
              android:layout_column="2"
@@ -146,7 +148,7 @@
              android:textSize="@dimen/text_size_normal"/>
          <ImageButton
              android:layout_width="match_parent"
-             android:id="@+id/img_backspace"
+             android:id="@+id/ibtnDialogBoardBackpace"
              android:layout_column="3"
              android:layout_weight="3"
              android:layout_height="match_parent"
@@ -155,7 +157,7 @@
       </TableRow>
       <TableRow>
          <androidx.appcompat.widget.AppCompatButton
-             android:id="@+id/btn_cancel"
+             android:id="@+id/btnDialogBoardCancel"
              android:textAllCaps="false"
              android:layout_weight="1"
              android:text="@string/huy"
@@ -167,7 +169,7 @@
              android:layout_height="wrap_content"/>
          <androidx.appcompat.widget.AppCompatButton
              android:background="@drawable/table_divider"
-             android:id="@+id/btn_confirm"
+             android:id="@+id/btnDialogBoardConfirm"
              android:textAllCaps="false"
              android:layout_weight="1"
              android:layout_width="wrap_content"

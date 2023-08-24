@@ -9,7 +9,7 @@
     android:orientation="vertical"
     >
 
-    <include android:id="@+id/header"
+    <include android:id="@+id/includeMainHeader"
         layout="@layout/layout_toolbar"/>
     <View
         android:layout_width="match_parent"
@@ -17,14 +17,14 @@
         android:background="@color/black_overlay"/>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+        android:id="@+id/crdMainAddOrder"
         app:cardElevation="@dimen/define_dimen_6"
         app:cardCornerRadius="@dimen/define_dimen_18"
         android:layout_marginTop="@dimen/define_dimen_48"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:id="@+id/layout_add_order"
+            android:id="@+id/llMainAddOrder"
             android:padding="@dimen/define_dimen_60"
             android:orientation="vertical"
             android:layout_width="wrap_content"
@@ -45,19 +45,19 @@
     </androidx.cardview.widget.CardView>
 
     <RelativeLayout
-        android:id="@+id/relative_list_product"
+        android:id="@+id/rlMainListProduct"
         android:padding="@dimen/define_dimen_16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <ImageView
-            android:id="@+id/img_content_icon"
+            android:id="@+id/ivMainContentIcon"
             app:tint="@color/black_overlay"
             android:layout_width="@dimen/define_dimen_24"
             android:layout_height="@dimen/define_dimen_24"
             android:src="@drawable/ic_list_product"/>
         <TextView
-            android:id="@+id/tv_content"
-            android:layout_toRightOf="@+id/img_content_icon"
+            android:id="@+id/tvMainContent"
+            android:layout_toRightOf="@+id/ivMainContentIcon"
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
             android:layout_marginLeft="@dimen/define_dimen_10"/>
         <ImageView
             app:tint="@color/black_overlay"
-            android:id="@+id/img_content_next"
+            android:id="@+id/ivMainContentNext"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

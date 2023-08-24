@@ -7,10 +7,10 @@
     android:orientation="vertical"
     tools:context=".ui.listproduct.ListProductActivity">
     <include layout="@layout/layout_toolbar"
-        android:id="@+id/header"
+        android:id="@+id/includeListProductHeader"
         />
     <TextView
-        android:id="@+id/tv_name"
+        android:id="@+id/tvListProductName"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
             android:drawableStart="@drawable/ic_search"
             android:textSize="@dimen/define_dimen_16"
             android:background="@drawable/bg_edit_text"
-            android:id="@+id/edt_search"
+            android:id="@+id/edtListProductSearch"
             android:hint="@string/hint_edit_text"
             android:padding="@dimen/define_dimen_10"
             android:layout_width="match_parent"
@@ -37,13 +37,13 @@
         <View
             android:layout_marginRight="@dimen/define_dimen_4"
             android:background="@color/light_black"
-            android:layout_toLeftOf="@id/img_barcode_scanner"
+            android:layout_toLeftOf="@id/ivBarcodeScanner"
             android:layout_width="1dp"
             android:layout_height="@dimen/define_dimen_30"
             android:layout_centerVertical="true"
             />
         <ImageView
-            android:id="@+id/img_barcode_scanner"
+            android:id="@+id/ivBarcodeScanner"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/define_dimen_24"
@@ -58,7 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/tv_all_product"
+            android:id="@+id/tvListProductAll"
             android:layout_centerVertical="true"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_small"
@@ -71,7 +71,7 @@
             android:layout_marginLeft="@dimen/define_dimen_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/tv_all_product"
+            android:layout_toRightOf="@+id/tvListProductAll"
             android:src="@drawable/ic_down"
             android:layout_centerVertical="true"/>
         <ImageView
@@ -85,22 +85,54 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/tv_total"
+        android:id="@+id/tvListProductTotal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/define_dimen_10"
         android:background="@color/bg_edittext"
         android:padding="@dimen/define_dimen_8"
         android:text="Số lượng sản phẩm" />
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefresh"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginTop="@dimen/define_dimen_14"
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/srListProduct"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/rcv_product"/>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="@dimen/define_dimen_14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rclvListProduct"/>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/llListProductNoResult"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                app:tint="@color/black"
+                android:layout_width="@dimen/define_dimen_100"
+                android:layout_height="@dimen/define_dimen_100"
+                android:src="@drawable/ic_search"/>
+            <TextView
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/khong_co_ket_qua_phu_hop"/>
+            <TextView
+                android:layout_marginTop="@dimen/define_dimen_8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_normal"
+                android:text="@string/vui_long_nhap_tu_khoa_khac_de_tim_kiem"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+
 </LinearLayout>

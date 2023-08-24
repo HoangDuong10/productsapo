@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
         android:layout_marginLeft="@dimen/define_dimen_12"
-        android:id="@+id/tv_name_variant"
+        android:id="@+id/tvOrderName"
         android:layout_marginTop="@dimen/define_dimen_20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,7 +13,7 @@
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_normal"/>
     <ImageView
-        android:id="@+id/img_cancel"
+        android:id="@+id/ivOrderCancel"
         android:layout_marginLeft="@dimen/define_dimen_12"
         android:layout_marginRight="@dimen/define_dimen_12"
         android:layout_marginTop="@dimen/define_dimen_12"
@@ -23,25 +23,25 @@
         android:layout_height="@dimen/define_dimen_16"
         android:src="@drawable/ic_cancel"/>
     <TextView
-        android:id="@+id/tv_sku"
+        android:id="@+id/tvOrderSKU"
         android:layout_marginLeft="@dimen/define_dimen_12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sku"
-        android:layout_below="@id/tv_name_variant"
+        android:layout_below="@id/tvOrderName"
         android:layout_marginTop="@dimen/define_dimen_8"
         android:textSize="@dimen/text_size_normal"/>
     <ImageView
         android:layout_marginRight="@dimen/define_dimen_12"
-        android:id="@+id/img_add"
+        android:id="@+id/ivOrderAdd"
         app:tint="@color/blue"
         android:layout_width="@dimen/define_dimen_24"
         android:layout_height="@dimen/define_dimen_24"
         android:src="@drawable/ic_add"
-        android:layout_alignBottom="@+id/tv_sku"
+        android:layout_alignBottom="@+id/tvOrderSKU"
         android:layout_alignParentRight="true"/>
     <TextView
-        android:id="@+id/tv_quantity"
+        android:id="@+id/tvOrderQuantity"
         android:layout_marginRight="@dimen/define_dimen_12"
         android:paddingLeft="@dimen/define_dimen_20"
         android:paddingRight="@dimen/define_dimen_20"
@@ -52,24 +52,24 @@
         android:layout_width="@dimen/define_dimen_80"
         android:layout_height="wrap_content"
         android:text="1"
-        android:layout_toLeftOf="@+id/img_add"
-        android:layout_alignBottom="@id/img_add"/>
+        android:layout_toLeftOf="@+id/ivOrderAdd"
+        android:layout_alignBottom="@id/ivOrderAdd"/>
     <ImageView
-        android:id="@+id/img_less"
+        android:id="@+id/ivOrderLess"
         app:tint="@color/blue"
         android:layout_marginRight="@dimen/define_dimen_12"
         android:src="@drawable/ic_less"
-        android:layout_toLeftOf="@+id/tv_quantity"
-        android:layout_alignBottom="@+id/tv_quantity"
+        android:layout_toLeftOf="@+id/tvOrderQuantity"
+        android:layout_alignBottom="@+id/tvOrderQuantity"
         android:layout_width="@dimen/define_dimen_24"
         android:layout_height="@dimen/define_dimen_24"/>
 
     <TextView
         android:layout_marginBottom="@dimen/define_dimen_12"
-        android:id="@+id/tv_total_retail_price"
+        android:id="@+id/tvOrderRetailPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_sku"
+        android:layout_below="@id/tvOrderSKU"
         android:layout_marginLeft="@dimen/define_dimen_12"
         android:layout_marginTop="@dimen/define_dimen_8"
         android:text="0"
@@ -77,24 +77,23 @@
         android:textSize="@dimen/text_size_normal" />
     <TextView
         android:visibility="gone"
-        android:id="@+id/tv_lack_of_goods"
+        android:id="@+id/tvOrderLackOfGoods"
         android:layout_marginLeft="@dimen/define_dimen_12"
-        android:layout_alignLeft="@+id/tv_quantity"
+        android:layout_alignLeft="@+id/tvOrderQuantity"
         android:textSize="@dimen/text_size_small"
-        android:layout_alignBottom="@id/tv_total_retail_price"
+        android:layout_alignBottom="@id/tvOrderRetailPrice"
         android:layout_alignParentRight="true"
         android:textColor="@color/red"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/thieu_hang"/>
     <ImageView
-        android:id="@+id/img_warning"
+        android:id="@+id/ivOrderWarning"
         android:visibility="gone"
         app:tint="@color/red"
-        android:layout_alignBottom="@+id/tv_lack_of_goods"
-        android:layout_toLeftOf="@+id/tv_lack_of_goods"
+        android:layout_alignBottom="@+id/tvOrderLackOfGoods"
+        android:layout_toLeftOf="@+id/tvOrderLackOfGoods"
         android:layout_width="@dimen/define_dimen_18"
         android:layout_height="@dimen/define_dimen_18"
         android:src="@drawable/ic_warning"/>
-
 </RelativeLayout>

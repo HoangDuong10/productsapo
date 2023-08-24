@@ -1,75 +1,88 @@
 package com.example.product.ui.detailVariant
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.product.R
-import com.example.product.adapter.DetailProductAdapter
-import com.example.product.adapter.DetailVariantAdapter
-import com.example.product.databinding.ActivityDetailProductOrVariantBinding
-import com.example.product.model.Product
-import com.example.product.model.Variants
-import com.example.product.ui.detailProduct.DetailProductPresenter
-import com.example.product.utils.GlobalFuntion
+import com.example.product.databinding.ActivityDetailBinding
+import com.example.product.ui.model.Product
+import com.example.product.ui.model.Variant
+import com.example.product.presenter.DetailVariantPresenter
+import com.example.product.ui.adapter.DetailVariantAdapter
+import com.example.product.utils.NumberUtil.formatNoTrailingZero
 
 class DetailVariantActivity : AppCompatActivity(),DetailVariantContracts{
+    companion object{
+        const val KEY_DATA_PRODUCT_ID="KEY_DATA_PRODUCT_ID"
+        const val KEY_DATA_VARIANT_ID="KEY_DATA_VARIANT_ID"
+    }
     private  var productId : Int =0
     private var variantId : Int = 0
     private lateinit var product: Product
-    private lateinit var listVariant : MutableList<Variants>
+    private lateinit var listVariant : MutableList<Variant>
     private lateinit var adapter: DetailVariantAdapter
-    private lateinit var variant:Variants
+    private lateinit var variant: Variant
     private lateinit var mDetailVariantPresenter: DetailVariantPresenter
-    private lateinit var binding : ActivityDetailProductOrVariantBinding
+    private lateinit var binding : ActivityDetailBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDetailProductOrVariantBinding.inflate(layoutInflater)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        variant = Variants()
+        variant = Variant()
         listVariant = mutableListOf()
         product = Product()
-        productId = intent.getIntExtra("product_id",0)
-        variantId = intent.getIntExtra("variant_id",0)
+        productId = intent.getIntExtra(KEY_DATA_PRODUCT_ID,0)
+        variantId = intent.getIntExtra(KEY_DATA_VARIANT_ID,0)
         mDetailVariantPresenter = DetailVariantPresenter(this)
         mDetailVariantPresenter.getDetailVariant(productId,variantId)
         initToolBar()
     }
-
+    override fun onDestroy() {
+        super.onDestroy()
+        mDetailVariantPresenter.variantDisposable?.dispose()
+        mDetailVariantPresenter.productDisposable?.dispose()
+    }
     override fun callApiErreor() {
-        GlobalFuntion.showToastMessage(this,"Call api không thành công")
+        Toast.makeText(this,getString(R.string.call_api_khong_thanh_cong), Toast.LENGTH_SHORT).show()
     }
 
-    override fun callDetailVariant(mVariant: Variants) {
+    override fun callDetailVariant(mVariant: Variant) {
         variant = mVariant
-        mDetailVariantPresenter.getDetailProduct(productId)
+        if(!variant.packsize){
+            mDetailVariantPresenter.getDetailProduct(productId)
+        }
+        showData()
 
     }
-    fun showData(){
+    override fun callDetailProduct(mProduct: Product) {
+        product = mProduct
+        showData()
+    }
+
+    private fun showData(){
         getListDetailVariant()
-        if(listVariant.isNullOrEmpty()){
-            binding.cardViewNameProduct.visibility = View.GONE
-            binding.layoutLinearHeaderAddInfo.visibility = View.GONE
-            binding.cardViewStatus.visibility = View.GONE
-            binding.cardViewVariantProduct.visibility = View.GONE
+        if(listVariant.isEmpty()){
+            binding.crdDetailNameProduct.visibility = View.GONE
+            binding.llDetailHeaderAddInfo.visibility = View.GONE
+            binding.crdDetailStatus.visibility = View.GONE
+            binding.crdDetailVariantProduct.visibility = View.GONE
             showInfo()
             showTaxPrice()
             showWarehouse()
             showCanSell()
             displayImageDetailVariant()
         }else{
-            binding.layoutListVariant.visibility=View.VISIBLE
-            binding.layoutLinearHeaderAddInfo.visibility = View.GONE
-            binding.cardViewVariantProduct.visibility=View.VISIBLE
-            binding.layoutLinearAddInfo.visibility = View.GONE
-            binding.cardViewStatus.visibility = View.GONE
-            binding.cardViewNameProduct.visibility= View.GONE
+            binding.rlDetailListVariant.visibility=View.VISIBLE
+            binding.llDetailHeaderAddInfo.visibility = View.GONE
+            binding.crdDetailVariantProduct.visibility=View.VISIBLE
+            binding.llDetailAddInfo.visibility = View.GONE
+            binding.crdDetailStatus.visibility = View.GONE
+            binding.crdDetailNameProduct.visibility= View.GONE
             showInfo()
             showTaxPrice()
             showWarehouse()
@@ -78,117 +91,96 @@ class DetailVariantActivity : AppCompatActivity(),DetailVariantContracts{
             displayImageDetailVariant()
         }
     }
-    override fun callDetailProduct(mProduct: Product) {
-        product = mProduct
-        showData()
-    }
-    fun getListDetailVariant() : MutableList<Variants>{
+    private fun getListDetailVariant() : MutableList<Variant>{
         for(i in 0 until product.variants.size){
-            if(variant.id == product.variants[i].packsize_root_id){
+            if(variant.id == product.variants[i].packsizeRootId){
                 listVariant.add(product.variants[i])
             }
         }
         return listVariant
     }
-
-
-    fun showInfo(){
-        binding.tvName.text = variant.name
-        binding.tvSku.text = variant.sku
-        binding.tvBarCode.text = variant.barcode
-        binding.tvWeight.text = GlobalFuntion.removeDecimal(variant.weight_value)+variant.weight_unit
-        if(variant.unit.isNullOrEmpty()){
-            binding.tvUnit.text="---"
-        }else{
-            binding.tvUnit.text = variant.unit
-        }
+    private fun showInfo(){
+        binding.tvDetailName.text = variant.name
+        binding.tvDetailSKU.text = variant.sku
+        binding.tvDetailBarcode.text = variant.barcode
+        binding.tvDetailWeight.text = variant.weightValue?.formatNoTrailingZero()+variant.weightUnit
+        binding.tvDetailUnit.text=variant.getStringUnit()
         if(!variant.opt1.isNullOrEmpty()){
             binding.layoutOpt1.visibility = View.VISIBLE
-            binding.tvOpt1.text=variant.opt1
+            binding.tvDetailOpt1.text=variant.opt1
         }
-        if(variant.packsize_quantity!=null &&variant.packsize_quantity!=0f){
+        if(variant.packSizeQuantity!=null &&variant.packSizeQuantity!=0.0){
            binding.layoutUnitQuantity.visibility= View.VISIBLE
-            binding.tvQuantity.text = GlobalFuntion.removeDecimal(variant.packsize_quantity)
+            binding.tvDetailQuantity.text = variant.packSizeQuantity?.formatNoTrailingZero()
         }
         if(!variant.opt2.isNullOrEmpty()){
             binding.layoutOpt2.visibility = View.VISIBLE
-            binding.tvOpt2.text=variant.opt2
+            binding.tvDetailOpt2.text=variant.opt2
         }
         if(!variant.opt3.isNullOrEmpty()){
             binding.layoutOpt3.visibility = View.VISIBLE
-            binding.tvOpt3.text=variant.opt3
+            binding.tvDetailOpt3.text=variant.opt3
         }
     }
-    fun showTaxPrice(){
+    private fun showTaxPrice(){
+        if(variant.taxIncluded){
+            binding.tvDetailTaxIncluded.text=getString(R.string.da_bao_gom_thue)
+        }else{
+            binding.tvDetailTaxIncluded.text=getString(R.string.chua_bao_gom_thue)
+        }
         if(variant.taxable){
-            binding.layoutLinearTax.visibility = View.VISIBLE
-            binding.tvInputTax.text = GlobalFuntion.removeDecimal(variant.input_vat_rate)
-            binding.tvOutputTax.text = GlobalFuntion.removeDecimal(variant.output_vat_rate)
+            binding.lltvDetailTax.visibility = View.VISIBLE
+            binding.tvDetailInputTax.text = variant.inputVatRate?.formatNoTrailingZero()
+            binding.tvDetailOutputTax.text = variant.outputVatRate?.formatNoTrailingZero()
         }else{
-            binding.layoutLinearTax.visibility = View.GONE
+            binding.lltvDetailTax.visibility = View.GONE
         }
-        for(i in 0 until variant.variant_prices.size){
-            if(variant.variant_prices[i].price_list.code.equals("BANLE")){
-                binding.tvRetailPrice.text = GlobalFuntion.removeDecimal(variant.variant_prices[i].value)
-            }else if (variant.variant_prices[i].price_list.code.equals("GIANHAP")){
-                binding.tvImportPrice.text = GlobalFuntion.removeDecimal(variant.variant_prices[i].value)
-            }else if(variant.variant_prices[i].price_list.code.equals("BANBUON")){
-                binding.tvWholesalePrice.text = GlobalFuntion.removeDecimal(variant.variant_prices[i].value)
-
-            }
-        }
+        binding.tvDetailRetailPrice.text=variant.getRetailPrice().formatNoTrailingZero()
+        binding.tvDetailImportPrice.text=variant.getImportPrice().formatNoTrailingZero()
+        binding.tvDetailWholesalePrice.text=variant.getWholesalePrice().formatNoTrailingZero()
     }
-    fun showWarehouse(){
-        var countAvailable : Float = 0f
-        var countOnHand : Float = 0f
-        for(i in 0 until variant.inventories.size){
-            countOnHand += variant.inventories[i].on_hand
-            countAvailable+= variant.inventories[i].available
-        }
-
-        binding.tvOnHand.text = GlobalFuntion.removeDecimal(countOnHand)
-        binding.tvInventory.text = GlobalFuntion.removeDecimal(countAvailable)
+    private fun showWarehouse(){
+        binding.tvDetailOnHand.text = variant.getTotalOnhand().formatNoTrailingZero()
+        binding.tvDetailAvailable.text = variant.getTotalAvailable().formatNoTrailingZero()
     }
-    fun showCanSell(){
+    private fun showCanSell(){
         if(variant.sellable){
-            binding.imgSellable.setImageResource(R.drawable.ic_check)
+            binding.ivDetailSellable.setImageResource(R.drawable.ic_check)
             val color = ContextCompat.getColor(this, R.color.green)
-            binding.imgSellable.setColorFilter(color)
-            binding.tvSellable.text="Cho phép bán"
+            binding.ivDetailSellable.setColorFilter(color)
+            binding.tvDetailSellable.text=getString(R.string.cho_phep_ban)
 
         }else{
-            binding.imgSellable.setImageResource(R.drawable.ic_error)
-            binding.tvSellable.text="Không cho phép bán"
+            val color = ContextCompat.getColor(this, R.color.red)
+            binding.ivDetailSellable.setColorFilter(color)
+            binding.ivDetailSellable.setImageResource(R.drawable.ic_error)
+            binding.tvDetailSellable.text=getString(R.string.khong_cho_phep_ban)
         }
     }
-    fun displayListVariantProduct(){
-        var linearLayoutManager = LinearLayoutManager(this)
-        binding.rcvVariant.layoutManager = linearLayoutManager
-        var dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        binding.rcvVariant.addItemDecoration(dividerItemDecoration)
+    private fun displayListVariantProduct(){
+        val linearLayoutManager = LinearLayoutManager(this)
+        binding.rclvDetailVariantOrUnit.layoutManager = linearLayoutManager
+        val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        binding.rclvDetailVariantOrUnit.addItemDecoration(dividerItemDecoration)
         adapter = DetailVariantAdapter(listVariant ,this)
-        binding.rcvVariant.adapter = adapter
+        binding.rclvDetailVariantOrUnit.adapter = adapter
     }
-    fun displayImageDetailVariant(){
+    private fun displayImageDetailVariant(){
         if(!variant.images.isNullOrEmpty()){
             binding.layoutImage.visibility = View.GONE
-            binding.imgDetailVariant.visibility=View.VISIBLE
-            Glide.with(this).load(variant.images[0].fullPath).into(binding.imgDetailVariant)
+            binding.ivDetailVariant.visibility=View.VISIBLE
+            Glide.with(this).load(variant.images!![0].fullPath).into(binding.ivDetailVariant)
         }else{
-            binding.imgDetailVariant.visibility=View.GONE
+            binding.ivDetailVariant.visibility=View.GONE
         }
 
     }
-    fun initToolBar(){
-        binding.header.imgLeft.visibility=View.VISIBLE
-        binding.header.imgLeft.setOnClickListener{
+    private fun initToolBar(){
+        binding.includeDetailHeader.ivToolbarLeft.visibility=View.VISIBLE
+        binding.includeDetailHeader.ivToolbarLeft.setOnClickListener{
             finish()
         }
-        binding.header.tvTitle.text="Chi tiết phiên bản"
+        binding.includeDetailHeader.tvToolbarTitle.text=getString(R.string.chi_tiet_phien_ban)
     }
-    override fun onDestroy() {
-        super.onDestroy()
-        mDetailVariantPresenter.variantDisposable?.dispose()
-        mDetailVariantPresenter.productDisposable?.dispose()
-    }
+
 }

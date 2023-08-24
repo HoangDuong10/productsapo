@@ -15,11 +15,11 @@
             android:src="@drawable/ic_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/img_left"/>
+            android:id="@+id/ivSelectVariantLeft"/>
         <RelativeLayout
             android:layout_marginRight="@dimen/define_dimen_12"
-            android:layout_toLeftOf="@+id/img_setting_menu"
-            android:layout_toRightOf="@+id/img_left"
+            android:layout_toLeftOf="@+id/ivSelectVariantAddProduct"
+            android:layout_toRightOf="@+id/ivSelectVariantLeft"
             android:layout_centerInParent="true"
             android:layout_marginTop="@dimen/define_dimen_12"
             android:layout_marginStart="@dimen/define_dimen_12"
@@ -31,7 +31,7 @@
                 android:drawableStart="@drawable/ic_search"
                 android:textSize="@dimen/define_dimen_16"
                 android:background="@drawable/bg_edit_text"
-                android:id="@+id/edt_search"
+                android:id="@+id/edtSelectVariantSearch"
                 android:hint="@string/tim_va_them_san_pham"
                 android:padding="@dimen/define_dimen_10"
                 android:layout_width="match_parent"
@@ -39,13 +39,13 @@
             <View
                 android:layout_marginRight="@dimen/define_dimen_4"
                 android:background="@color/light_black"
-                android:layout_toLeftOf="@id/img_barcode_scanner"
+                android:layout_toLeftOf="@id/ivSelectVariantBarcodeScanner"
                 android:layout_width="1dp"
                 android:layout_height="@dimen/define_dimen_30"
                 android:layout_centerVertical="true"
                 />
             <ImageView
-                android:id="@+id/img_barcode_scanner"
+                android:id="@+id/ivSelectVariantBarcodeScanner"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/define_dimen_24"
@@ -57,7 +57,7 @@
 
         <ImageView
             android:layout_marginEnd="@dimen/define_dimen_12"
-            android:id="@+id/img_setting_menu"
+            android:id="@+id/ivSelectVariantAddProduct"
             app:tint="@color/black_overlay"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
@@ -92,14 +92,14 @@
             app:track="@drawable/track_swich"
             android:thumb="@drawable/thumb_swich"
             android:layout_centerVertical="true"
-            android:id="@+id/switch_change"
+            android:id="@+id/scSelectVariantChange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"/>
         <TextView
             android:layout_marginRight="@dimen/define_dimen_12"
             android:textColor="@color/black"
-            android:layout_toLeftOf="@+id/switch_change"
+            android:layout_toLeftOf="@+id/scSelectVariantChange"
             android:textSize="@dimen/text_size_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_weight="1"
-        android:id="@+id/rcv_variant"
+        android:id="@+id/rclvSelectVariant"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <View
@@ -116,6 +116,7 @@
         android:layout_height="0.1dp"
         />
     <LinearLayout
+        android:id="@+id/llSelectVariantBottom"
         android:alpha="0.8"
         android:orientation="horizontal"
         android:padding="@dimen/define_dimen_12"
@@ -123,7 +124,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
-            android:id="@+id/btn_reselect"
+            android:id="@+id/btnSelectVariantReselect"
             android:textAllCaps="false"
             android:layout_weight="1"
             android:text="@string/huy"
@@ -133,7 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <Button
-            android:id="@+id/btn_finished"
+            android:id="@+id/btnSelectVariantFinished"
             android:textAllCaps="false"
             android:layout_weight="1"
             android:layout_width="wrap_content"

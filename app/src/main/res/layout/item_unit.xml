@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rlUnitItem"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/define_dimen_18">
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/ivUnitSubdirectory"
+        android:layout_centerVertical="true"
+        android:layout_width="@dimen/define_dimen_48"
+        android:layout_height="@dimen/define_dimen_48"
+        android:src="@drawable/ic_subdirectory"/>
+    <ImageView
+        android:scaleType="centerCrop"
+        android:layout_toRightOf="@+id/ivUnitSubdirectory"
+        android:layout_centerVertical="true"
+        android:id="@+id/ivUnitProduct"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_empty"/>
+    <RelativeLayout
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/define_dimen_10"
+        android:layout_toRightOf="@+id/ivUnitProduct"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tvUnitName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/san_pham"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_normal"
+            />
+        <TextView
+            android:id="@+id/tvSKU"
+            android:layout_below="@+id/tvUnitName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/SKU"
+            android:textSize="@dimen/text_size_small"/>
+        <TextView
+            android:layout_toRightOf="@+id/tvSKU"
+            android:layout_below="@+id/tvUnitName"
+            android:id="@+id/tvUnitSKU"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SHU: fvfrvr"
+            android:textSize="@dimen/text_size_small"/>
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_alignParentEnd="true"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvUnitRetailPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="0vghgfghfgjf"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_normal" />
+        <LinearLayout
+            android:layout_gravity="right"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_gravity="right"
+                android:textSize="@dimen/text_size_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ton_kho"/>
+            <TextView
+                android:layout_gravity="right"
+                android:id="@+id/tvUnitOnHand"
+                android:textSize="@dimen/text_size_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0hjgjgghjg"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_gravity="right"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_gravity="right"
+                android:textSize="@dimen/text_size_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/co_the_ban"/>
+
+            <TextView
+                android:layout_gravity="right"
+                android:id="@+id/tvUnitAvailable"
+                android:textSize="@dimen/text_size_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0hjgjgghjg"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

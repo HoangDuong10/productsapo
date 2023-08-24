@@ -3,85 +3,71 @@ package com.example.product.ui.listproduct
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.product.R
-import com.example.product.adapter.ProductAdapter
-import com.example.product.adapter.VariantAdapter
+import com.example.product.ui.adapter.ProductAdapter
 import com.example.product.databinding.ActivityListProductBinding
-import com.example.product.listense.IClickItemProduct
-import com.example.product.listense.IClickItemVariant
-import com.example.product.model.MetaData
-import com.example.product.model.Product
-import com.example.product.model.Variants
+import com.example.product.presenter.ListProductPresenter
+import com.example.product.ui.AppConfig
 import com.example.product.ui.detailProduct.DetailProductActivity
 import com.example.product.ui.detailVariant.DetailVariantActivity
-import com.example.product.utils.Constant
-import com.example.product.utils.GlobalFuntion
-import com.example.product.utils.PaginationScrollListener
-import kotlin.math.ceil
 
-class ListProductActivity : AppCompatActivity(),ListProductContracts {
-    private var listVariant : MutableList<Variants>?=null
-    private var listProduct : MutableList<Product>?=null
-    private var totalProduct : Int = 0
-    private var totalVariant : Int = 0
+import com.example.product.ui.model.MetaData
+import com.example.product.ui.model.Product
+import com.example.product.ui.model.Variant
+import com.example.product.widget.PaginationScrollListener
+
+class ListProductActivity : AppCompatActivity(), ListProductContracts {
+    private var listVariant: MutableList<Variant>? = null
+    private var listProduct: MutableList<Product>? = null
+    private var totalProduct: Int = 0
+    private var totalVariant: Int = 0
     private var isLoading: Boolean = false
     private var isLastPage: Boolean = false
     private var totalPage = 0
     private var currentPage = 1;
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var productAdapter: ProductAdapter
-    private lateinit var variantAdapter : VariantAdapter
     private lateinit var mListProductPresenter: ListProductPresenter
-    private lateinit var binding : ActivityListProductBinding
+    private lateinit var binding: ActivityListProductBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityListProductBinding.inflate(layoutInflater)
-        var dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        binding.rcvProduct.addItemDecoration(dividerItemDecoration)
         mListProductPresenter = ListProductPresenter(this)
         mListProductPresenter.getListProduct(currentPage)
-        clickOnChangeAdapter()
+        clickOnChangeTypeAdapter()
+        val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        binding.rclvListProduct.addItemDecoration(dividerItemDecoration)
+        search()
         setContentView(binding.root)
     }
-    fun initToolBar(title: String,image: Int){
-        binding.header.imgLeft.visibility = View.VISIBLE
-        binding.tvName.text = title
-        binding.header.tvTitle.visibility= View.GONE
-        binding.header.imgSettingMenu.setImageResource(R.drawable.ic_setting)
-        binding.header.imgSettingMenu.visibility = View.VISIBLE
-        binding.header.imgProductOrEditOrVariant.visibility = View.VISIBLE
-        binding.header.imgProductOrEditOrVariant.setImageResource(image)
-        binding.header.imgLeft.setOnClickListener{
-            finish()
-        }
-    }
-    override fun callApiErreor() {
-        GlobalFuntion.showToastMessage(this,"Call api không thành công")
+    override fun onDestroy() {
+        super.onDestroy()
+        mListProductPresenter.productDisposable?.dispose()
     }
 
-    override fun setListProduct(mListProduct: MutableList<Product>, metadata: MetaData) {
+    override fun callListProduct(mListProduct: MutableList<Product>, metadata: MetaData) {
         listProduct = mListProduct
-        totalProduct = metadata.total
-        binding.tvTotal.text = totalProduct.toString()+ " Sản phẩm"
-        initToolBar("Sản phẩm",R.drawable.ic_inventory)
-        totalPage = ceil((metadata.total.toDouble() / Constant.limit)).toInt()
+        totalProduct = metadata.total!!
+        binding.tvListProductTotal.text = totalProduct.toString()+AppConfig.Space + resources.getString(R.string.san_pham)
+        initToolBar(resources.getString(R.string.san_pham), R.drawable.ic_inventory)
         Log.d("aaa", "" + totalPage)
         if (currentPage == 1) {
-            displayListProduct(mListProduct)
+            displayListProduct()
+            productAdapter.setData(ProductAdapter.TYPE_PRODUCT,mListProduct)
         } else {
             productAdapter.remoteFooterLoading()
             isLoading = false
-            productAdapter.setList(mListProduct)
-            productAdapter.notifyDataSetChanged()
+            productAdapter.addListProduct(mListProduct)
         }
-        if (currentPage < totalPage) {
+        if (totalProduct>currentPage* AppConfig.limit) {
             productAdapter.addFooterLoading()
         } else {
             isLastPage = true
@@ -89,121 +75,150 @@ class ListProductActivity : AppCompatActivity(),ListProductContracts {
 
     }
 
-    override fun setListVariant(mListVariant: MutableList<Variants>, metaData: MetaData) {
-        listVariant=mListVariant
-        totalVariant = metaData.total
-        binding.tvTotal.text = totalVariant.toString()+ " Phiên bản"
-        initToolBar("Quản lí kho",R.drawable.ic_product_management)
-        totalPage = ceil(metaData.total.toDouble()/Constant.limit).toInt()
-        if(currentPage==1){
-            displayListVariant(mListVariant)
+    override fun callListVariant(mListVariant: MutableList<Variant>, metaData: MetaData) {
+        listVariant = mListVariant
+        totalVariant = metaData.total!!
+        if(totalVariant==0){
+            binding.llListProductNoResult.visibility=View.VISIBLE
+            binding.rclvListProduct.visibility=View.GONE
         }else{
-            variantAdapter.removeFooterLoading()
-            isLoading= false
-            variantAdapter.setList(mListVariant)
-            variantAdapter.notifyDataSetChanged()
+            binding.llListProductNoResult.visibility=View.GONE
+            binding.rclvListProduct.visibility=View.VISIBLE
         }
-        if(currentPage<totalPage){
-            variantAdapter.addFooterLoading()
-        }else{
-            isLastPage= true
+        binding.tvListProductTotal.text = totalVariant.toString()+AppConfig.Space + resources.getString(R.string.phien_ban)
+        initToolBar(resources.getString(R.string.quan_li_kho), R.drawable.ic_product_management)
+        if (currentPage == 1) {
+            displayListProduct()
+            productAdapter.setData(ProductAdapter.TYPE_VARIANT,mListVariant)
+        } else {
+            productAdapter.remoteFooterLoading()
+            isLoading = false
+            productAdapter.addListProduct(mListVariant)
+        }
+        if (totalVariant>currentPage* AppConfig.limit) {
+            productAdapter.addFooterLoading()
+        } else {
+            isLastPage = true
         }
     }
-    fun clickOnChangeAdapter(){
-        binding.header.imgProductOrEditOrVariant.setOnClickListener{
-            if(binding.rcvProduct.adapter is ProductAdapter){
-                binding.tvTotal.text = totalVariant.toString()+" Phiên bản"
-                isLastPage=false
+
+    override fun callApiErreor() {
+        Toast.makeText(this,getString(R.string.call_api_khong_thanh_cong), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun initToolBar(title: String, image: Int) {
+        binding.includeListProductHeader.ivToolbarLeft.visibility = View.VISIBLE
+        binding.tvListProductName.text = title
+        binding.includeListProductHeader.tvToolbarTitle.visibility = View.GONE
+        binding.includeListProductHeader.ivToolbarSettingMenu.setImageResource(R.drawable.ic_setting)
+        binding.includeListProductHeader.ivToolbarSettingMenu.visibility = View.VISIBLE
+        binding.includeListProductHeader.ivEditOrProductOrVariant.visibility = View.VISIBLE
+        binding.includeListProductHeader.ivEditOrProductOrVariant.setImageResource(image)
+
+        binding.includeListProductHeader.ivToolbarLeft.setOnClickListener {
+            finish()
+        }
+    }
+
+    private fun clickOnChangeTypeAdapter() {
+        binding.includeListProductHeader.ivEditOrProductOrVariant.setOnClickListener {
+            if (productAdapter.getCurrentType()==ProductAdapter.TYPE_PRODUCT) {
+                binding.tvListProductTotal.text = totalVariant.toString() + resources.getString(R.string.phien_ban)
+                isLastPage = false
                 currentPage = 1
                 mListProductPresenter.getListVariant(currentPage)
-            }else {
-                binding.tvTotal.text = totalProduct.toString()+ " Sản phẩm"
-                isLastPage=false
-                currentPage=1
+            } else if(productAdapter.getCurrentType()==ProductAdapter.TYPE_VARIANT){
+                binding.tvListProductTotal.text = totalProduct.toString() + resources.getString(R.string.san_pham)
+                isLastPage = false
+                currentPage = 1
                 mListProductPresenter.getListProduct(currentPage)
             }
-
         }
     }
-    fun pagination(){
-        binding.rcvProduct.addOnScrollListener(object : PaginationScrollListener(linearLayoutManager){
+
+    private fun pagination() {
+        binding.rclvListProduct.addOnScrollListener(object :
+            PaginationScrollListener(linearLayoutManager) {
             override fun loadMoreItem() {
                 isLoading = true
-                currentPage+=1
-                if(binding.rcvProduct.adapter is ProductAdapter){
+                currentPage += 1
+                if (productAdapter.getCurrentType() == ProductAdapter.TYPE_PRODUCT) {
                     mListProductPresenter.getListProduct(currentPage)
-                }else if(binding.rcvProduct.adapter is VariantAdapter){
+                } else if (productAdapter.getCurrentType() == ProductAdapter.TYPE_VARIANT) {
                     mListProductPresenter.getListVariant(currentPage)
                 }
             }
+
             override fun isLoading(): Boolean {
                 return isLoading
             }
+
             override fun isLastPage(): Boolean {
                 return isLastPage
             }
         })
     }
-    fun displayListVariant(listVariant:MutableList<Variants>){
+
+    private fun displayListProduct() {
         linearLayoutManager = LinearLayoutManager(this)
-        binding.rcvProduct.layoutManager = linearLayoutManager
-        variantAdapter = VariantAdapter(listVariant,this,object :IClickItemVariant{
-            override fun onClickItemProduct(productId: Int, variantInt: Int) {
-                goToDetailVariant(productId,variantInt)
-            }
-        })
-        binding.rcvProduct.adapter= variantAdapter
+        binding.rclvListProduct.layoutManager = linearLayoutManager
+        productAdapter = ProductAdapter(this)
+        binding.rclvListProduct.adapter = productAdapter
+        goToDetailProduct()
+        goToDetailVariant()
         pagination()
         refreshData()
     }
-    fun displayListProduct(listProduct: MutableList<Product>) {
-        linearLayoutManager = LinearLayoutManager(this)
-        binding.rcvProduct.layoutManager = linearLayoutManager
-        productAdapter = ProductAdapter(listProduct,this,object : IClickItemProduct{
-            override fun onClickItemProduct(id: Int) {
-                goToDetailProduct(id)
+
+    private fun refreshData() {
+        binding.srListProduct.setOnRefreshListener {
+            currentPage = 1
+            productAdapter.clearListProduct()
+            if (productAdapter.getCurrentType() == ProductAdapter.TYPE_PRODUCT) {
+                mListProductPresenter.getListProduct(currentPage)
+            } else {
+                mListProductPresenter.getListVariant(currentPage)
             }
-
-        })
-        binding.rcvProduct.adapter = productAdapter
-        pagination()
-        refreshData()
+            binding.srListProduct.isRefreshing = false
+            isLastPage = false
+        }
     }
-    fun refreshData() {
-        binding.swipeRefresh.setOnRefreshListener(object : SwipeRefreshLayout.OnRefreshListener {
-            override fun onRefresh() {
-                currentPage = 1
-                if(binding.rcvProduct.adapter is ProductAdapter){
-                    productAdapter.clearListProduct()
-                    mListProductPresenter.getListProduct(currentPage)
-                }else {
-                    variantAdapter.clearListVariant()
-                    mListProductPresenter.getListVariant(currentPage)
 
+    private fun goToDetailVariant() {
+        productAdapter.onClickItemVariant={idProduct,idVariant->
+            val intent = Intent(this, DetailVariantActivity::class.java)
+            intent.putExtra(DetailProductActivity.KEY_DATA_PRODUCT_ID, idProduct)
+            intent.putExtra(DetailProductActivity.KEY_DATA_VARIANT_ID, idVariant)
+            startActivity(intent)
+        }
+    }
+
+    private fun goToDetailProduct() {
+        productAdapter.onClickItemProduct= {id->
+            val intent = Intent(this, DetailProductActivity::class.java)
+            intent.putExtra(DetailProductActivity.KEY_DATA_PRODUCT_ID, id)
+            startActivity(intent)
+        }
+    }
+    private fun search(){
+        binding.edtListProductSearch.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val content : String = s.toString()
+                if(productAdapter.getCurrentType()==ProductAdapter.TYPE_PRODUCT){
+                    mListProductPresenter.findProduct(content)
+                }else{
+                    mListProductPresenter.findVariant(content)
                 }
 
+            }
+            override fun afterTextChanged(s: Editable?) {
 
-                binding.swipeRefresh.isRefreshing = false
-                isLastPage = false
             }
 
         })
     }
-    fun goToDetailVariant(productID: Int,variantId:Int) {
-        var intent = Intent(this, DetailVariantActivity::class.java)
-        intent.putExtra("product_id", productID)
-        intent.putExtra("variant_id",variantId)
-        startActivity(intent)
-    }
-    fun goToDetailProduct(id: Int) {
-        var intent = Intent(this, DetailProductActivity::class.java)
-        intent.putExtra("product_id", id)
-        startActivity(intent)
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        mListProductPresenter.productDisposable?.dispose()
-        mListProductPresenter.variantDisposable?.dispose()
-    }
+
 
 }

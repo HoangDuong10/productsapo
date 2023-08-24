@@ -1,8 +1,8 @@
 package com.example.product
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.product.utils.GlobalFuntion
 import com.example.product.databinding.ActivityMainBinding
 import com.example.product.ui.createorder.CreateOrderActivity
 import com.example.product.ui.listproduct.ListProductActivity
@@ -18,13 +18,15 @@ class MainActivity : AppCompatActivity() {
 
     }
     fun goToListProduct(){
-        mActivityMain.relativeListProduct.setOnClickListener{
-            GlobalFuntion.startActivity(this,ListProductActivity::class.java)
+        mActivityMain.rlMainListProduct.setOnClickListener{
+            val intent =Intent(this,ListProductActivity::class.java)
+            startActivity(intent)
         }
     }
     fun goToCreateOrder(){
-        mActivityMain.layoutAddOrder.setOnClickListener{
-            GlobalFuntion.startActivity(this,CreateOrderActivity::class.java)
+        mActivityMain.llMainAddOrder.setOnClickListener{
+            val intent =Intent(this,CreateOrderActivity::class.java)
+            startActivity(intent)
         }
     }
 }

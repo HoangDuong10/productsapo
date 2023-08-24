@@ -77,4 +77,20 @@
     <string name="xac_nhan">Xác nhận</string>
     <string name="huy">Hủy</string>
     <string name="thue">Thuế</string>
+    <string name="call_api_khong_thanh_cong">Call api không thành công</string>
+    <string name="call_api_thanh_cong">Call api thành công</string>
+    <string name="phien_ban"> Phiên bản</string>
+    <string name="quan_li_kho">Quản lí kho</string>
+    <string name="khong_cho_phep_ban">Không cho phép bán</string>
+    <string name="chi_tiet_san_pham">Chi tiết sản phẩm</string>
+    <string name="ngung_giao_dich">Ngừng giao dịch</string>
+    <string name="da_bao_gom_thue">Đã bao gồm thuế</string>
+    <string name="SKU">SKU:</string>
+    <string name="ban_co_chac_chan_muon_xoa_san_pham">Bạn có chắc chán muốn xóa sản phẩm</string>
+    <string name="nay_ra_khoi_don_hang"> này ra khỏi đơn hàng?</string>
+    <string name="thoat">Thoát</string>
+    <string name="dong_y">Đồng ý</string>
+    <string name="khong_co_ket_qua_phu_hop">Không có kết quả phù hợp</string>
+    <string name="vui_long_nhap_tu_khoa_khac_de_tim_kiem">Vui lòng nhập từ khóa khác để tìm kiếm</string>
+    <string name="chi_tiet_phien_ban">Chi tiết phiên bản</string>
 </resources>

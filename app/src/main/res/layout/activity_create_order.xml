@@ -16,10 +16,9 @@
             android:src="@drawable/ic_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/img_left"/>
+            android:id="@+id/ivCreateOrderLeft"/>
         <RelativeLayout
-            android:layout_toLeftOf="@+id/img_setting_menu"
-            android:layout_toRightOf="@+id/img_left"
+            android:layout_toRightOf="@+id/ivCreateOrderLeft"
             android:layout_centerInParent="true"
             android:layout_marginTop="@dimen/define_dimen_12"
             android:layout_marginStart="@dimen/define_dimen_12"
@@ -27,11 +26,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <EditText
+            <TextView
                 android:drawableStart="@drawable/ic_search"
                 android:textSize="@dimen/define_dimen_16"
                 android:background="@drawable/bg_edit_text"
-                android:id="@+id/edt_search"
+                android:id="@+id/tvCreateOrderSearch"
                 android:hint="@string/tim_va_them_san_pham"
                 android:padding="@dimen/define_dimen_10"
                 android:layout_width="match_parent"
@@ -39,13 +38,13 @@
             <View
                 android:layout_marginRight="@dimen/define_dimen_4"
                 android:background="@color/light_black"
-                android:layout_toLeftOf="@id/img_barcode_scanner"
+                android:layout_toLeftOf="@id/ivCreateOrderBarcodeScanner"
                 android:layout_width="1dp"
                 android:layout_height="@dimen/define_dimen_30"
                 android:layout_centerVertical="true"
                 />
             <ImageView
-                android:id="@+id/img_barcode_scanner"
+                android:id="@+id/ivCreateOrderBarcodeScanner"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/define_dimen_24"
@@ -58,7 +57,7 @@
         <ImageView
             android:layout_marginEnd="@dimen/define_dimen_12"
             android:visibility="visible"
-            android:id="@+id/img_setting_menu"
+            android:id="@+id/ivCreateOrderSettingMenu"
             app:tint="@color/light_black"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
@@ -84,9 +83,9 @@
                 android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/rcv_order"/>
+                android:id="@+id/rclvCreateOrder"/>
             <LinearLayout
-                android:id="@+id/layout_add_order"
+                android:id="@+id/llCreateOrderAddOrder"
                 android:padding="@dimen/define_dimen_18"
                 android:background="@color/white"
                 android:gravity="center"
@@ -162,14 +161,15 @@
                         android:textSize="@dimen/text_size_normal"
                         android:textColor="@color/black"
                         android:text="@string/tong_so_luong"/>
+
                     <TextView
-                        android:id="@+id/tv_total"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_normal"
-                        android:text="0"
-                        android:layout_alignParentEnd="true"
+                        android:id="@+id/tvCreateOrderTotal"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_normal" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:paddingRight="@dimen/define_dimen_12"
@@ -183,16 +183,18 @@
                         android:textSize="@dimen/text_size_normal"
                         android:textColor="@color/black"
                         android:text="@string/tong_tien_hang"/>
+
                     <TextView
-                        android:id="@+id/tv_total_amount"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_normal"
-                        android:text="0"
-                        android:layout_alignParentEnd="true"
+                        android:id="@+id/tvCreateOrderTotalAmount"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_normal" />
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/rlCreateOrderTax"
                     android:paddingRight="@dimen/define_dimen_12"
                     android:paddingLeft="@dimen/define_dimen_12"
                     android:layout_marginTop="@dimen/define_dimen_12"
@@ -204,14 +206,15 @@
                         android:textSize="@dimen/text_size_normal"
                         android:textColor="@color/black"
                         android:text="@string/thue"/>
+
                     <TextView
-                        android:id="@+id/tv_tax"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_normal"
-                        android:text="0"
-                        android:layout_alignParentEnd="true"
+                        android:id="@+id/tvCreateOrderTax"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_normal" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:paddingRight="@dimen/define_dimen_12"
@@ -225,14 +228,15 @@
                         android:textSize="@dimen/text_size_normal"
                         android:textColor="@color/blue"
                         android:text="@string/chiet_khau"/>
+
                     <TextView
-                        android:id="@+id/tv_discount"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_normal"
-                        android:text="0"
-                        android:layout_alignParentEnd="true"
+                        android:id="@+id/tvCreateOrderDiscount"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_normal" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:paddingBottom="@dimen/define_dimen_12"
@@ -248,7 +252,7 @@
                         android:textColor="@color/blue"
                         android:text="@string/phi_giao_dich"/>
                     <TextView
-                        android:id="@+id/tv_transaction_fee"
+                        android:id="@+id/tvCreateOrderTransactionFee"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_normal"
                         android:text="0"
@@ -439,7 +443,7 @@
                 android:textColor="@color/black"
                 android:text="@string/tam_tinh"/>
             <TextView
-                android:id="@+id/tv_total_money"
+                android:id="@+id/tvCreateOrderTotalMoney"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_normal"
                 android:text="0"
@@ -462,6 +466,7 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content">
                <Button
+                   android:id="@+id/btnCreateOrder"
                    android:text="@string/tao_don_va_giao_hang"
                    android:textColor="@color/white"
                    android:textAllCaps="false"

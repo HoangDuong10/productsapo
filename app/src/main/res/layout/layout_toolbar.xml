@@ -12,7 +12,7 @@
         android:src="@drawable/ic_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/img_left"/>
+        android:id="@+id/ivToolbarLeft"/>
     <TextView
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -21,23 +21,23 @@
         android:textSize="@dimen/text_size_normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_title"/>
+        android:id="@+id/tvToolbarTitle"/>
     <ImageView
         app:tint="@color/light_black"
         android:visibility="gone"
         android:layout_marginRight="@dimen/define_dimen_16"
-        android:layout_toLeftOf="@id/img_setting_menu"
+        android:layout_toLeftOf="@id/ivToolbarSettingMenu"
         android:layout_marginEnd="@dimen/define_dimen_10"
         android:layout_centerInParent="true"
         android:src="@drawable/ic_edit"
-        android:id="@+id/img_product_or_edit_or_variant"
+        android:id="@+id/ivEditOrProductOrVariant"
         android:layout_width="24dp"
         android:layout_height="24dp"/>
 
     <ImageView
         android:layout_marginEnd="@dimen/define_dimen_12"
         android:visibility="gone"
-        android:id="@+id/img_setting_menu"
+        android:id="@+id/ivToolbarSettingMenu"
         app:tint="@color/light_black"
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
