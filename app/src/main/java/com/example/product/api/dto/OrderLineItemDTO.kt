@@ -1,5 +1,6 @@
 package com.example.product.api.dto
 
+import com.example.product.model.VariantDTO
 import com.google.gson.annotations.SerializedName
 
 class OrderLineItemDTO {

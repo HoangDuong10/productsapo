@@ -18,6 +18,8 @@ class VariantDTO {
     var sellable : Boolean = false
     var sku : String?=null
     var barcode : String?=null
+    @SerializedName("image_id")
+    var imageId :Int?=null
 
     @SerializedName("weight_value")
     var weightValue : Double?=null

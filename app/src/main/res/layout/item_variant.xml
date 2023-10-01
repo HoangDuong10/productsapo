@@ -3,37 +3,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="@dimen/define_dimen_5"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="@dimen/define_dimen_18"
     android:id="@+id/rlVariantItem">
     <RelativeLayout
         android:id="@+id/rlVariant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <ImageView
+            android:paddingLeft="@dimen/define_dimen_12"
             android:layout_marginTop="@dimen/define_dimen_5"
            android:paddingRight="@dimen/define_dimen_12"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/ivVariant"
-            android:layout_width="@dimen/define_dimen_56"
-            android:layout_height="@dimen/define_dimen_56"
+            android:layout_width="@dimen/define_dimen_90"
+            android:layout_height="@dimen/define_dimen_90"
             android:src="@drawable/ic_empty"/>
 
         <TextView
+            android:padding="@dimen/define_dimen_4"
+            android:textSize="@dimen/text_size_small"
+            android:maxLines="1"
             android:textStyle="bold"
             android:textColor="@color/blue"
             android:id="@+id/tvVariantTotal"
             android:visibility="gone"
             android:gravity="center"
-            android:padding="@dimen/define_dimen_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/ivVariant"
             android:layout_alignParentTop="true"
-            android:background="@drawable/white_circle" />
-
-
+            android:background="@drawable/shape_cir_white_bg_blue_stroke_corner_define_dimen_2" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -67,6 +68,7 @@
 
     </RelativeLayout>
     <LinearLayout
+        android:layout_marginTop="@dimen/define_dimen_12"
        android:layout_alignParentEnd="true"
         android:orientation="vertical"
         android:layout_width="wrap_content"

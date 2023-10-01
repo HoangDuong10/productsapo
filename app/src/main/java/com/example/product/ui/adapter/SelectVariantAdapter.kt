@@ -1,88 +1,106 @@
 package com.example.product.ui.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.product.R
 import com.example.product.databinding.ItemLoadingBinding
 import com.example.product.databinding.ItemVariantBinding
-import com.example.product.ui.model.Variant
-import com.example.product.utils.NumberUtil.formatNoTrailingZero
+import com.example.product.ui.model.OrderLineItem
+import com.example.product.utils.NumberUtil.formatNumber
 
 
-class SelectVariantAdapter (var mListVariant : MutableList<Variant>, var mContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class SelectVariantAdapter  : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
    companion object{
        const val TYPE_ITEM : Int = 1
        const val TYPE_LOADING : Int = 2
    }
-
+    var mListOrderLineItem:  MutableList<OrderLineItem> = mutableListOf()
+    private var listOrderLineItem:  MutableList<OrderLineItem> = mutableListOf()
     private var isLoadingAdd : Boolean = false
-    var onClickItemVariant: ((idVariant: Int,variant: Variant) -> Unit)? = null
-
+    var onClickItemVariant: ((orderLineItem: OrderLineItem) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if(TYPE_ITEM == viewType){
             val itemBing = ItemVariantBinding.inflate(LayoutInflater.from(parent.context),parent,false)
             return VariantViewHolder(itemBing)
         }else{
             val loadingBinding = ItemLoadingBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-            return loadingViewHolder(loadingBinding)
+            return LoadingViewHolder(loadingBinding)
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
        if(holder.itemViewType == TYPE_ITEM){
            val variantViewHolder : VariantViewHolder = holder as VariantViewHolder
-           variantViewHolder.itemBing.tvVariantName.text = mListVariant[position].name
-           if(!mListVariant[position].images.isNullOrEmpty()){
-               Glide.with(mContext).load(mListVariant[position].images?.get(0)?.fullPath).into(variantViewHolder.itemBing.ivVariant)
+           variantViewHolder.bind(listOrderLineItem[position])
+           holder.itemBing.rlVariantItem.setOnClickListener{
+               holder.itemBing.tvVariantTotal.visibility=View.VISIBLE
+               listOrderLineItem[position].quantity=listOrderLineItem[position].quantity + 1
+               holder.itemBing.tvVariantTotal.text = (listOrderLineItem[position].quantity).formatNumber()
+               onClickItemVariant?.invoke(listOrderLineItem[position])
+
            }
-           else{
-               variantViewHolder.itemBing.ivVariant.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_empty))
-           }
-           variantViewHolder.itemBing.tvVariantSKU.text =mListVariant[position].sku
-           variantViewHolder.itemBing.tvVariantOnHand.text = mListVariant[position].getTotalOnhand().formatNoTrailingZero()
-           variantViewHolder.itemBing.tvVariantRetailPrice.text=mListVariant[position].getRetailPrice().formatNoTrailingZero()
-           variantViewHolder.itemBing.tvVariantTotal.text = if (mListVariant[position].total !=null) mListVariant[position].total!!.formatNoTrailingZero() else "0"
-           if(  variantViewHolder.itemBing.tvVariantTotal.text.toString().toDouble()==0.0){
-               variantViewHolder.itemBing.tvVariantTotal.visibility=View.GONE
-           }else{
-               variantViewHolder.itemBing.tvVariantTotal.visibility=View.VISIBLE
-           }
-           variantViewHolder.itemBing.rlVariantItem.setOnClickListener{
-               variantViewHolder.itemBing.tvVariantTotal.visibility=View.VISIBLE
-               variantViewHolder.itemBing.tvVariantTotal.text =if (mListVariant[position].total !=null) (mListVariant[position].total!!+1).formatNoTrailingZero() else "1"
-               onClickItemVariant?.invoke(mListVariant[position].id!!,mListVariant[position])
-           }
+
+
        }
     }
+
     override fun getItemCount(): Int {
-        return mListVariant.size
+        return listOrderLineItem.size
     }
 
     override fun getItemViewType(position: Int): Int {
-        if(position == mListVariant.size-1 && isLoadingAdd){
+        if(position == listOrderLineItem.size-1 && isLoadingAdd){
             return TYPE_LOADING
         }
         return TYPE_ITEM
     }
     fun addFooterLoading(){
         isLoadingAdd = true
-        mListVariant.add(Variant())
+        listOrderLineItem.add(OrderLineItem())
     }
     fun removeFooterLoading(){
         isLoadingAdd = false
-        val position: Int = mListVariant.size-1
-        mListVariant.removeAt(position)
+        val position: Int = listOrderLineItem.size-1
+        listOrderLineItem.removeAt(position)
         notifyItemRemoved(position)
     }
-    fun addList(list: MutableList<Variant>){
-        this.mListVariant.addAll(list)
+    fun addList(list: MutableList<OrderLineItem>){
+        val positionStart=listOrderLineItem.size
+        listOrderLineItem.addAll(list)
+        notifyItemRangeInserted(positionStart, list.size)
+
     }
-    class VariantViewHolder(val itemBing : ItemVariantBinding) : RecyclerView.ViewHolder(itemBing.root) {}
-    class loadingViewHolder(loangBinding : ItemLoadingBinding) : RecyclerView.ViewHolder(loangBinding.root){}
+    fun clearListVariant() {
+        val itemCount = listOrderLineItem.size
+        listOrderLineItem.clear()
+        notifyItemRangeRemoved(0, itemCount)
+    }
+    class VariantViewHolder(val itemBing : ItemVariantBinding) : RecyclerView.ViewHolder(itemBing.root) {
+        private var ivVariant=itemBing.ivVariant
+        private var tvVariantName = itemBing.tvVariantName
+        private var tvVariantSKU=itemBing.tvVariantSKU
+        private var tvVariantOnHand=itemBing.tvVariantOnHand
+        private var tvVariantRetailPrice=itemBing.tvVariantRetailPrice
+        private var tvVariantTotal=itemBing.tvVariantTotal
+        fun bind(orderLineItem: OrderLineItem){
+            Glide.with(ivVariant.context).load(orderLineItem.variant.getFullPath()).error(R.drawable.ic_empty).placeholder(R.drawable.ic_empty).into(ivVariant)
+            tvVariantName.text=orderLineItem.variant.name
+            tvVariantSKU.text =orderLineItem.variant.sku
+            tvVariantOnHand.text = orderLineItem.variant.getTotalOnhand().formatNumber()
+            tvVariantRetailPrice.text=orderLineItem.variant.getRetailPrice().formatNumber()
+            tvVariantTotal.text =  orderLineItem.quantity.formatNumber()
+            if(tvVariantTotal.text.toString().replace(",","").toDouble()==0.0){
+                tvVariantTotal.visibility=View.GONE
+            }else{
+                tvVariantTotal.visibility=View.VISIBLE
+            }
+        }
+
+    }
+
+    class LoadingViewHolder(loangBinding : ItemLoadingBinding) : RecyclerView.ViewHolder(loangBinding.root){}
 
 }

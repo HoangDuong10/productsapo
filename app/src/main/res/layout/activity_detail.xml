@@ -2,104 +2,122 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5F5"
+    android:orientation="vertical"
     tools:context=".ui.detailProduct.DetailProductActivity">
-    <include layout="@layout/layout_toolbar"
-        android:id="@+id/includeDetailHeader"/>
+
+    <include
+        android:id="@+id/includeDetailHeader"
+        layout="@layout/layout_toolbar" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/black_overlay"/>
-    <ScrollView
+        android:background="@color/black_overlay" />
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <ImageView
-                android:visibility="gone"
-                android:scaleType="fitCenter"
-                android:layout_marginTop="@dimen/define_dimen_12"
                 android:id="@+id/ivDetailVariant"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/define_dimen_200"
                 android:layout_marginLeft="@dimen/define_dimen_12"
+                android:layout_marginTop="@dimen/define_dimen_12"
                 android:layout_marginRight="@dimen/define_dimen_12"
                 android:layout_marginBottom="@dimen/define_dimen_14"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/define_dimen_200"/>
+                android:scaleType="fitCenter"
+                android:visibility="gone" />
+
             <LinearLayout
                 android:id="@+id/layout_image"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
                 <ImageView
+                    android:layout_width="@dimen/define_dimen_48"
+                    android:layout_height="@dimen/define_dimen_48"
                     android:layout_margin="@dimen/define_dimen_12"
                     android:layout_marginTop="@dimen/define_dimen_14"
                     android:background="@color/white"
-                    app:tint = "@color/blue"
-                    android:layout_width="@dimen/define_dimen_48"
-                    android:layout_height="@dimen/define_dimen_48"
-                    android:src="@drawable/ic_add_img"/>
+                    android:src="@drawable/ic_add_img"
+                    app:tint="@color/blue" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rclvDetailImage"
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
 
             </LinearLayout>
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/crdDetailNameProduct"
-                app:cardCornerRadius="@dimen/define_dimen_6"
-                android:layout_margin="@dimen/define_dimen_12"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/define_dimen_12"
+                app:cardCornerRadius="@dimen/define_dimen_6">
+
                 <TextView
                     android:id="@+id/tvDetailNameProduct"
-                    android:padding="@dimen/define_dimen_8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/define_dimen_8"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_normal"/>
+                    android:textSize="@dimen/text_size_normal" />
             </androidx.cardview.widget.CardView>
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/crdDetailInfo"
-                app:cardElevation="@dimen/define_dimen_12"
-                android:layout_margin="@dimen/define_dimen_12"
-                app:cardCornerRadius="@dimen/define_dimen_16"
-                android:layout_marginTop="@dimen/define_dimen_14"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/define_dimen_12"
+                android:layout_marginTop="@dimen/define_dimen_14"
+                app:cardCornerRadius="@dimen/define_dimen_16"
+                app:cardElevation="@dimen/define_dimen_12">
+
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:padding="@dimen/define_dimen_12"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/define_dimen_12">
+
                     <TextView
                         android:id="@+id/tvDetailName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_normal"
+                        android:text="@string/san_pham"
                         android:textColor="@color/black"
-                        android:text="@string/san_pham"/>
+                        android:textSize="@dimen/text_size_normal" />
+
                     <LinearLayout
-                        android:layout_marginTop="@dimen/define_dimen_10"
+                        android:layout_weight="10"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        >
+                        android:layout_marginTop="@dimen/define_dimen_10"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text="@string/sku"
                             android:layout_width="@dimen/define_dimen_150"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="@string/sku"
+                            android:textSize="@dimen/text_size_normal" />
+
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text=":"
+                            android:gravity="center"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text=":"
+                            android:textSize="@dimen/text_size_normal" />
 
                         <TextView
                             android:id="@+id/tvDetailSKU"
@@ -109,68 +127,79 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_normal" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_marginTop="@dimen/define_dimen_10"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/define_dimen_10"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text="@string/barcode"
                             android:layout_width="@dimen/define_dimen_150"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="@string/barcode"
+                            android:textSize="@dimen/text_size_normal" />
+
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text=":"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text=":"
+                            android:textSize="@dimen/text_size_normal" />
+
                         <TextView
                             android:id="@+id/tvDetailBarcode"
-                            android:textSize="@dimen/text_size_normal"
-                            android:textColor="@color/black"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/___"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_marginTop="@dimen/define_dimen_10"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text="@string/khoi_luong"
-                            android:layout_width="@dimen/define_dimen_150"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text=":"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:id="@+id/tvDetailWeight"
-                            android:textSize="@dimen/text_size_normal"
+                            android:text="@string/___"
                             android:textColor="@color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/___"/>
+                            android:textSize="@dimen/text_size_normal" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_marginTop="@dimen/define_dimen_10"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/define_dimen_10"
+                        android:orientation="horizontal">
+
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text="@string/don_vi_tinh"
                             android:layout_width="@dimen/define_dimen_150"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="@string/khoi_luong"
+                            android:textSize="@dimen/text_size_normal" />
+
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text=":"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text=":"
+                            android:textSize="@dimen/text_size_normal" />
+
+                        <TextView
+                            android:id="@+id/tvDetailWeight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/___"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_normal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/define_dimen_10"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/define_dimen_150"
+                            android:layout_height="wrap_content"
+                            android:text="@string/don_vi_tinh"
+                            android:textSize="@dimen/text_size_normal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":"
+                            android:textSize="@dimen/text_size_normal" />
+
                         <TextView
                             android:id="@+id/tvDetailUnit"
                             android:layout_width="wrap_content"
@@ -180,157 +209,180 @@
                             android:textSize="@dimen/text_size_normal" />
 
                     </LinearLayout>
+
                     <LinearLayout
-                        android:visibility="gone"
                         android:id="@+id/layout_unit_quantity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/define_dimen_10"
                         android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:visibility="gone">
+
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text="@string/so_luong_quy_doi"
                             android:layout_width="@dimen/define_dimen_150"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="@string/so_luong_quy_doi"
+                            android:textSize="@dimen/text_size_normal" />
+
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text=":"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text=":"
+                            android:textSize="@dimen/text_size_normal" />
+
                         <TextView
                             android:id="@+id/tvDetailQuantity"
-                            android:textSize="@dimen/text_size_normal"
-                            android:textColor="@color/black"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/___"/>
+                            android:text="@string/___"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_normal" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:visibility="gone"
                         android:id="@+id/layout_opt1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/define_dimen_10"
                         android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:visibility="gone">
+
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text="@string/kich_thuoc"
                             android:layout_width="@dimen/define_dimen_150"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="@string/kich_thuoc"
+                            android:textSize="@dimen/text_size_normal" />
+
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text=":"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text=":"
+                            android:textSize="@dimen/text_size_normal" />
+
                         <TextView
                             android:id="@+id/tvDetailOpt1"
-                            android:textSize="@dimen/text_size_normal"
-                            android:textColor="@color/black"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/___"/>
+                            android:text="@string/___"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_normal" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:visibility="gone"
                         android:id="@+id/layout_opt2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/define_dimen_10"
                         android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:visibility="gone">
+
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text="@string/mau_sac"
                             android:layout_width="@dimen/define_dimen_150"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="@string/mau_sac"
+                            android:textSize="@dimen/text_size_normal" />
+
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text=":"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text=":"
+                            android:textSize="@dimen/text_size_normal" />
+
                         <TextView
                             android:id="@+id/tvDetailOpt2"
-                            android:textSize="@dimen/text_size_normal"
-                            android:textColor="@color/black"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/___"/>
+                            android:text="@string/___"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_normal" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:visibility="gone"
                         android:id="@+id/layout_opt3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/define_dimen_10"
                         android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:visibility="gone">
+
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text="@string/chat_lieu"
                             android:layout_width="@dimen/define_dimen_150"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="@string/chat_lieu"
+                            android:textSize="@dimen/text_size_normal" />
+
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text=":"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:id="@+id/tvDetailOpt3"
-                            android:textSize="@dimen/text_size_normal"
-                            android:textColor="@color/black"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/___"/>
+                            android:text=":"
+                            android:textSize="@dimen/text_size_normal" />
+
+                        <TextView
+                            android:id="@+id/tvDetailOpt3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/___"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_normal" />
                     </LinearLayout>
 
                 </LinearLayout>
 
 
             </androidx.cardview.widget.CardView>
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/crdDetailTaxPrice"
-                app:cardElevation="@dimen/define_dimen_12"
-                android:layout_margin="@dimen/define_dimen_12"
-                app:cardCornerRadius="@dimen/define_dimen_16"
-                android:layout_marginTop="@dimen/define_dimen_14"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/define_dimen_12"
+                android:layout_marginTop="@dimen/define_dimen_14"
+                app:cardCornerRadius="@dimen/define_dimen_16"
+                app:cardElevation="@dimen/define_dimen_12">
+
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
                     <LinearLayout
-                        android:padding="@dimen/define_dimen_10"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/define_dimen_10"
                         android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:padding="@dimen/define_dimen_10">
+
                         <ImageView
 
-                            app:tint="@color/light_black"
                             android:layout_width="@dimen/define_dimen_20"
                             android:layout_height="@dimen/define_dimen_20"
-                            android:src="@drawable/ic_price_product"/>
+                            android:src="@drawable/ic_price_product"
+                            app:tint="@color/light_black" />
+
                         <TextView
-                            android:textColor="@color/black"
-                            android:layout_marginLeft="@dimen/define_dimen_6"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/text_size_normal"
-                            android:text="@string/gia_san_pham"
                             android:layout_width="@dimen/define_dimen_130"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/define_dimen_6"
+                            android:text="@string/gia_san_pham"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_normal"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tvDetailTaxIncluded"
-                            android:textSize="@dimen/text_size_normal"
-                            android:textColor="@color/black"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/chua_bao_gom_thue"/>
+                            android:text="@string/chua_bao_gom_thue"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_normal" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/lltvDetailTax"
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -352,10 +404,10 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:padding="@dimen/define_dimen_10"
-                            android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/define_dimen_10">
 
                             <TextView
                                 android:id="@+id/tvDetailOutputTax"
@@ -367,42 +419,46 @@
 
                             <TextView
                                 android:id="@+id/tvDetailInputTax"
-                                android:layout_marginLeft="@dimen/define_dimen_10"
-                                android:textSize="@dimen/text_size_normal"
-                                android:textColor="@color/black"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="10 %"/>
+                                android:layout_marginLeft="@dimen/define_dimen_10"
+                                android:text="10 %"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_normal" />
                         </LinearLayout>
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
-                        android:background="@color/black_overlay"/>
+                        android:background="@color/black_overlay" />
+
                     <LinearLayout
-                        android:padding="@dimen/define_dimen_10"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text="@string/gia_ban_le"
-                            android:layout_width="@dimen/define_dimen_150"
-                            android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/define_dimen_10">
 
                         <TextView
-                            android:layout_marginLeft="@dimen/define_dimen_10"
-                            android:textSize="@dimen/text_size_normal"
+                            android:layout_width="@dimen/define_dimen_150"
+                            android:layout_height="wrap_content"
+                            android:text="@string/gia_ban_le"
+                            android:textSize="@dimen/text_size_normal" />
+
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/gia_ban_buon"/>
+                            android:layout_marginLeft="@dimen/define_dimen_10"
+                            android:text="@string/gia_ban_buon"
+                            android:textSize="@dimen/text_size_normal" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:padding="@dimen/define_dimen_6"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/define_dimen_6">
+
                         <TextView
                             android:id="@+id/tvDetailRetailPrice"
                             android:layout_width="@dimen/define_dimen_150"
@@ -413,39 +469,41 @@
 
                         <TextView
                             android:id="@+id/tvDetailWholesalePrice"
-                            android:layout_marginLeft="@dimen/define_dimen_10"
-                            android:textSize="@dimen/text_size_normal"
-                            android:textColor="@color/black"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"/>
+                            android:layout_marginLeft="@dimen/define_dimen_10"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_normal" />
                     </LinearLayout>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
-                        android:background="@color/black_overlay"/>
+                        android:background="@color/black_overlay" />
+
                     <LinearLayout
-                        android:padding="@dimen/define_dimen_10"
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/define_dimen_10">
+
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
-                            android:text="@string/gia_nhap"
                             android:layout_width="@dimen/define_dimen_150"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="@string/gia_nhap"
+                            android:textSize="@dimen/text_size_normal" />
 
                         <TextView
                             android:id="@+id/tvDetailImportPrice"
-                            android:layout_marginTop="@dimen/define_dimen_6"
-                            android:textSize="@dimen/text_size_normal"
-                            android:textColor="@color/black"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"/>
+                            android:layout_marginTop="@dimen/define_dimen_6"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_normal" />
                     </LinearLayout>
                 </LinearLayout>
-
 
 
             </androidx.cardview.widget.CardView>
@@ -477,28 +535,28 @@
                             android:src="@drawable/ic_warehouse" />
 
                         <TextView
-                            android:textStyle="bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/define_dimen_12"
                             android:text="@string/kho_hang"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_normal" />
+                            android:textSize="@dimen/text_size_normal"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <RelativeLayout
-                        android:layout_marginEnd="@dimen/define_dimen_20"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/define_dimen_12"
+                        android:layout_marginEnd="@dimen/define_dimen_20"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_normal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/chi_nhanh_mac_dinh" />
+                            android:text="@string/chi_nhanh_mac_dinh"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_normal" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -508,188 +566,206 @@
                             android:textSize="@dimen/text_size_normal" />
 
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
                             android:id="@+id/tvDetailOnHand"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:text="0"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_normal" />
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:layout_marginEnd="@dimen/define_dimen_20"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/define_dimen_12"
+                        android:layout_marginEnd="@dimen/define_dimen_20"
                         android:orientation="horizontal"
                         android:paddingBottom="@dimen/define_dimen_8">
 
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/vi_tri_luu_kho" />
+                            android:text="@string/vi_tri_luu_kho"
+                            android:textSize="@dimen/text_size_normal" />
 
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_toLeftOf="@+id/tvDetailAvailable"
-                            android:text="@string/co_the_ban" />
+                            android:text="@string/co_the_ban"
+                            android:textSize="@dimen/text_size_normal" />
 
                         <TextView
-                            android:textSize="@dimen/text_size_normal"
                             android:id="@+id/tvDetailAvailable"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:text="0"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_normal" />
                     </RelativeLayout>
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/crdDetailAddInfo"
-                android:layout_margin="@dimen/define_dimen_12"
-                app:cardElevation="@dimen/define_dimen_12"
-                app:cardCornerRadius="@dimen/define_dimen_16"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/define_dimen_12"
+                app:cardCornerRadius="@dimen/define_dimen_16"
+                app:cardElevation="@dimen/define_dimen_12">
+
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
                     <LinearLayout
                         android:id="@+id/llDetailHeaderAddInfo"
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                         <RelativeLayout
                             android:id="@+id/rlDetailAddInfo"
-                            android:padding="@dimen/define_dimen_12"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/define_dimen_12">
+
                             <TextView
-                                android:layout_marginTop="@dimen/define_dimen_10"
-                                android:textStyle="bold"
                                 android:id="@+id/tvDetailAddInfo"
-                                android:textSize="@dimen/text_size_normal"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/define_dimen_10"
                                 android:text="@string/thong_tin_them"
-                                android:textColor="@color/black"/>
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_normal"
+                                android:textStyle="bold" />
+
                             <ImageView
                                 android:id="@+id/ivDetailDownOrUp"
-                                android:layout_centerVertical="true"
                                 android:layout_width="@dimen/define_dimen_24"
                                 android:layout_height="@dimen/define_dimen_24"
-                                android:src="@drawable/ic_down"
                                 android:layout_alignParentEnd="true"
-                                app:tint="@color/light_black"/>
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/ic_down"
+                                app:tint="@color/light_black" />
+
                             <TextView
-                                android:layout_marginTop="@dimen/define_dimen_4"
-                                android:textSize="@dimen/text_size_normal"
-                                android:layout_below="@+id/tvDetailAddInfo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/mo_ta_phan_loại_san_pham"/>
+                                android:layout_below="@+id/tvDetailAddInfo"
+                                android:layout_marginTop="@dimen/define_dimen_4"
+                                android:text="@string/mo_ta_phan_loại_san_pham"
+                                android:textSize="@dimen/text_size_normal" />
                         </RelativeLayout>
+
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="0.5dp"
-                            android:background="@color/black_overlay"/>
+                            android:background="@color/black_overlay" />
+
                         <LinearLayout
                             android:id="@+id/llDetailAddInfo"
-                            android:visibility="visible"
-                            android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                            <TextView
-                                android:padding="@dimen/define_dimen_12"
-                                android:textSize="@dimen/text_size_normal"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/loai_san_pham"/>
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="visible">
 
                             <TextView
-                                android:textColor="@color/black"
-                                android:id="@+id/tvDetailProductCategory"
-                                android:padding="@dimen/define_dimen_12"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/___"
+                                android:padding="@dimen/define_dimen_12"
+                                android:text="@string/loai_san_pham"
                                 android:textSize="@dimen/text_size_normal" />
+
+                            <TextView
+                                android:id="@+id/tvDetailProductCategory"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/define_dimen_12"
+                                android:text="@string/___"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_normal" />
+
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="0.5dp"
-                                android:background="@color/black_overlay"/>
+                                android:background="@color/black_overlay" />
+
                             <TextView
 
-                                android:padding="@dimen/define_dimen_12"
-                                android:textSize="@dimen/text_size_normal"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/nhan_hieu"/>
+                                android:padding="@dimen/define_dimen_12"
+                                android:text="@string/nhan_hieu"
+                                android:textSize="@dimen/text_size_normal" />
+
                             <TextView
-                                android:textColor="@color/black"
                                 android:id="@+id/tvDetailBrand"
-                                android:padding="@dimen/define_dimen_12"
-                                android:textSize="@dimen/text_size_normal"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/___"/>
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dp"
-                                android:background="@color/black_overlay"/>
-                            <TextView
                                 android:padding="@dimen/define_dimen_12"
-                                android:textSize="@dimen/text_size_normal"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/mo_ta"/>
-                            <TextView
+                                android:text="@string/___"
                                 android:textColor="@color/black"
-                                android:id="@+id/tvDetailDescription"
-                                android:padding="@dimen/define_dimen_12"
-                                android:textSize="@dimen/text_size_normal"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/___"/>
+                                android:textSize="@dimen/text_size_normal" />
+
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="0.5dp"
-                                android:background="@color/black_overlay"/>
+                                android:background="@color/black_overlay" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/define_dimen_12"
+                                android:text="@string/mo_ta"
+                                android:textSize="@dimen/text_size_normal" />
+
+                            <TextView
+                                android:id="@+id/tvDetailDescription"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/define_dimen_12"
+                                android:text="@string/___"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_normal" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:background="@color/black_overlay" />
                         </LinearLayout>
-                        </LinearLayout>
+                    </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/llDetailAddFooterInfo"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="@dimen/define_dimen_12"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/define_dimen_12">
 
                         <ImageView
                             android:id="@+id/ivDetailSellable"
                             android:layout_width="13dp"
                             android:layout_height="@dimen/define_dimen_18"
-                            android:src="@drawable/ic_check"
-                            />
+                            android:src="@drawable/ic_check_product" />
+
                         <TextView
                             android:id="@+id/tvDetailSellable"
-                            android:textColor="@color/black"
-                            android:padding="@dimen/define_dimen_12"
-                            android:textSize="@dimen/text_size_normal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/cho_phep_ban"/>
+                            android:padding="@dimen/define_dimen_12"
+                            android:text="@string/cho_phep_ban"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_normal" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/crdDetailVariantProduct"
                 android:layout_width="match_parent"
@@ -735,48 +811,52 @@
                         android:layout_below="@+id/view" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/crdDetailStatus"
-                app:cardCornerRadius="@dimen/define_dimen_6"
-                android:layout_margin="@dimen/define_dimen_12"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/define_dimen_12"
+                app:cardCornerRadius="@dimen/define_dimen_6">
+
                 <LinearLayout
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/define_dimen_12"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/define_dimen_12">
 
                     <ImageView
                         android:id="@+id/ivDetailStatus"
                         android:layout_width="@dimen/define_dimen_12"
                         android:layout_height="@dimen/define_dimen_12"
                         android:src="@drawable/ic_dots" />
+
                     <TextView
                         android:id="@+id/tvDetailStatus"
-                        android:layout_marginLeft="@dimen/define_dimen_6"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_normal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/dang_giao_dich"/>
+                        android:layout_marginLeft="@dimen/define_dimen_6"
+                        android:text="@string/dang_giao_dich"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_normal" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
             <Button
-                android:textColor="@color/orange"
-                android:layout_marginBottom="@dimen/define_dimen_24"
-                android:background="@drawable/bg_button_delete_product"
-                android:paddingLeft="@dimen/define_dimen_24"
-                android:paddingRight="@dimen/define_dimen_24"
-                android:textAllCaps="false"
-                android:textSize="@dimen/text_size_large"
-                android:layout_marginTop="@dimen/define_dimen_24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/define_dimen_24"
+                android:layout_marginBottom="@dimen/define_dimen_24"
+                android:background="@drawable/shape_rec_white_bg_orange_stroke_corner_define_dimen_6"
+                android:paddingLeft="@dimen/define_dimen_24"
+                android:paddingRight="@dimen/define_dimen_24"
                 android:text="@string/xoa_san_pham"
-                android:layout_gravity="center"/>
+                android:textAllCaps="false"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/text_size_large" />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

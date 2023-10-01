@@ -1,7 +1,7 @@
 package com.example.product.presenter
 
 
-import com.example.product.api.ApiConfig
+import com.example.product.api.RetrofitConfig
 import com.example.product.ui.model.Product
 import com.example.product.model.ProductResponse
 import com.example.product.ui.detailProduct.DetailProductContracts
@@ -14,7 +14,7 @@ class DetailProductPresenter(var mDetailProductContracts: DetailProductContracts
     var disposable : Disposable?=null
     private var productResponse : ProductResponse?=null
     fun getDetailProduct(id : Int){
-        ApiConfig.apiService.getDetailProduct(id).subscribeOn(Schedulers.io())
+        RetrofitConfig.apiService.getDetailProduct(id).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<ProductResponse>{
                 override fun onSubscribe(d: Disposable) {
@@ -26,11 +26,11 @@ class DetailProductPresenter(var mDetailProductContracts: DetailProductContracts
                 }
 
                 override fun onError(e: Throwable) {
-                    mDetailProductContracts.callApiErreor()
+                    mDetailProductContracts.callApiErreor(e.message.toString())
                 }
 
                 override fun onComplete() {
-                    val product= productResponse?.product?.let { ProductConverter.toModel(it) } as Product
+                    val product= productResponse?.product?.let { ProductConverter.productDTOToProduct(it) } as Product
                     mDetailProductContracts.callProduct(product)
                 }
 

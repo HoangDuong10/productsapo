@@ -16,13 +16,6 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".SelectVariantActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -39,10 +32,10 @@
 
             <!-- Các thuộc tính và hành động của Activity -->
         </activity>
-        <activity android:name=".ui.detailProduct.DetailProductActivity"></activity>
-        <activity android:name=".ui.detailVariant.DetailVariantActivity"></activity>
-        <activity android:name=".ui.createorder.CreateOrderActivity"></activity>
-        <activity android:name=".ui.selectvariant.SelectVariantActivity"></activity>
+        <activity android:name=".ui.detailProduct.DetailProductActivity" />
+        <activity android:name=".ui.detailVariant.DetailVariantActivity" />
+        <activity android:name=".ui.createorder.CreateOrderActivity" />
+        <activity android:name=".ui.selectvariant.SelectVariantActivity" />
     </application>
 
 </manifest>

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -14,24 +13,25 @@ import com.example.product.R
 import com.example.product.ui.adapter.ProductAdapter
 import com.example.product.databinding.ActivityListProductBinding
 import com.example.product.presenter.ListProductPresenter
-import com.example.product.ui.AppConfig
 import com.example.product.ui.detailProduct.DetailProductActivity
 import com.example.product.ui.detailVariant.DetailVariantActivity
-
 import com.example.product.ui.model.MetaData
 import com.example.product.ui.model.Product
 import com.example.product.ui.model.Variant
 import com.example.product.widget.PaginationScrollListener
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 
 class ListProductActivity : AppCompatActivity(), ListProductContracts {
-    private var listVariant: MutableList<Variant>? = null
-    private var listProduct: MutableList<Product>? = null
+    private var query = ""
     private var totalProduct: Int = 0
     private var totalVariant: Int = 0
     private var isLoading: Boolean = false
     private var isLastPage: Boolean = false
-    private var totalPage = 0
-    private var currentPage = 1;
+    private var checkType :Boolean = true
+    private var currentPage = 1
+    private val searchSubject = PublishSubject.create<String>()
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var productAdapter: ProductAdapter
     private lateinit var mListProductPresenter: ListProductPresenter
@@ -40,44 +40,45 @@ class ListProductActivity : AppCompatActivity(), ListProductContracts {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityListProductBinding.inflate(layoutInflater)
-        mListProductPresenter = ListProductPresenter(this)
-        mListProductPresenter.getListProduct(currentPage)
-        clickOnChangeTypeAdapter()
-        val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        binding.rclvListProduct.addItemDecoration(dividerItemDecoration)
-        search()
         setContentView(binding.root)
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        mListProductPresenter.productDisposable?.dispose()
+        mListProductPresenter = ListProductPresenter(this)
+        mListProductPresenter.getListProduct(currentPage,query)
+        initToolBar(resources.getString(R.string.san_pham_xml), R.drawable.ic_inventory)
+        displayListProduct()
+        onClick()
     }
 
-    override fun callListProduct(mListProduct: MutableList<Product>, metadata: MetaData) {
-        listProduct = mListProduct
-        totalProduct = metadata.total!!
-        binding.tvListProductTotal.text = totalProduct.toString()+AppConfig.Space + resources.getString(R.string.san_pham)
-        initToolBar(resources.getString(R.string.san_pham), R.drawable.ic_inventory)
-        Log.d("aaa", "" + totalPage)
-        if (currentPage == 1) {
-            displayListProduct()
-            productAdapter.setData(ProductAdapter.TYPE_PRODUCT,mListProduct)
-        } else {
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mListProductPresenter.disposable?.dispose()
+    }
+
+    override fun callListProduct(listProduct: MutableList<Product>, metaData: MetaData) {
+        totalProduct = metaData.total
+        if(totalProduct==0){
+            binding.llListProductNoResult.visibility=View.VISIBLE
+            binding.rclvListProduct.visibility=View.GONE
+        }else{
+            binding.llListProductNoResult.visibility=View.GONE
+            binding.rclvListProduct.visibility=View.VISIBLE
+        }
+        if (currentPage ==1) {
+            binding.tvListProductTotal.text = resources.getString(R.string.san_pham, totalProduct.toString())
+            productAdapter.addListProduct(listProduct)
+        }else{
             productAdapter.remoteFooterLoading()
             isLoading = false
-            productAdapter.addListProduct(mListProduct)
+            productAdapter.addListProduct(listProduct)
         }
-        if (totalProduct>currentPage* AppConfig.limit) {
-            productAdapter.addFooterLoading()
-        } else {
+        if (!metaData.isLoadMore()) {
             isLastPage = true
         }
 
     }
 
-    override fun callListVariant(mListVariant: MutableList<Variant>, metaData: MetaData) {
-        listVariant = mListVariant
-        totalVariant = metaData.total!!
+    override fun callListVariant(listVariant: MutableList<Variant>, metaData: MetaData) {
+        totalVariant = metaData.total
         if(totalVariant==0){
             binding.llListProductNoResult.visibility=View.VISIBLE
             binding.rclvListProduct.visibility=View.GONE
@@ -85,25 +86,21 @@ class ListProductActivity : AppCompatActivity(), ListProductContracts {
             binding.llListProductNoResult.visibility=View.GONE
             binding.rclvListProduct.visibility=View.VISIBLE
         }
-        binding.tvListProductTotal.text = totalVariant.toString()+AppConfig.Space + resources.getString(R.string.phien_ban)
-        initToolBar(resources.getString(R.string.quan_li_kho), R.drawable.ic_product_management)
         if (currentPage == 1) {
-            displayListProduct()
-            productAdapter.setData(ProductAdapter.TYPE_VARIANT,mListVariant)
-        } else {
+            productAdapter.addListProduct(listVariant)
+            binding.tvListProductTotal.text = getString(R.string.phien_ban,totalVariant.toString())
+        }else{
             productAdapter.remoteFooterLoading()
             isLoading = false
-            productAdapter.addListProduct(mListVariant)
+            productAdapter.addListProduct(listVariant)
         }
-        if (totalVariant>currentPage* AppConfig.limit) {
-            productAdapter.addFooterLoading()
-        } else {
+        if (!metaData.isLoadMore()) {
             isLastPage = true
         }
     }
 
-    override fun callApiErreor() {
-        Toast.makeText(this,getString(R.string.call_api_khong_thanh_cong), Toast.LENGTH_SHORT).show()
+    override fun callApiError(message:String) {
+        Toast.makeText(this,message, Toast.LENGTH_SHORT).show()
     }
 
     private fun initToolBar(title: String, image: Int) {
@@ -114,38 +111,23 @@ class ListProductActivity : AppCompatActivity(), ListProductContracts {
         binding.includeListProductHeader.ivToolbarSettingMenu.visibility = View.VISIBLE
         binding.includeListProductHeader.ivEditOrProductOrVariant.visibility = View.VISIBLE
         binding.includeListProductHeader.ivEditOrProductOrVariant.setImageResource(image)
-
         binding.includeListProductHeader.ivToolbarLeft.setOnClickListener {
             finish()
         }
     }
 
-    private fun clickOnChangeTypeAdapter() {
-        binding.includeListProductHeader.ivEditOrProductOrVariant.setOnClickListener {
-            if (productAdapter.getCurrentType()==ProductAdapter.TYPE_PRODUCT) {
-                binding.tvListProductTotal.text = totalVariant.toString() + resources.getString(R.string.phien_ban)
-                isLastPage = false
-                currentPage = 1
-                mListProductPresenter.getListVariant(currentPage)
-            } else if(productAdapter.getCurrentType()==ProductAdapter.TYPE_VARIANT){
-                binding.tvListProductTotal.text = totalProduct.toString() + resources.getString(R.string.san_pham)
-                isLastPage = false
-                currentPage = 1
-                mListProductPresenter.getListProduct(currentPage)
-            }
-        }
-    }
 
-    private fun pagination() {
+    private fun loadMore() {
         binding.rclvListProduct.addOnScrollListener(object :
             PaginationScrollListener(linearLayoutManager) {
             override fun loadMoreItem() {
+                productAdapter.addFooterLoading()
                 isLoading = true
                 currentPage += 1
-                if (productAdapter.getCurrentType() == ProductAdapter.TYPE_PRODUCT) {
-                    mListProductPresenter.getListProduct(currentPage)
-                } else if (productAdapter.getCurrentType() == ProductAdapter.TYPE_VARIANT) {
-                    mListProductPresenter.getListVariant(currentPage)
+                if (productAdapter.modeView == ProductAdapter.TYPE_PRODUCT) {
+                    mListProductPresenter.getListProduct(currentPage,query)
+                } else {
+                    mListProductPresenter.getListVariant(currentPage,query)
                 }
             }
 
@@ -161,27 +143,39 @@ class ListProductActivity : AppCompatActivity(), ListProductContracts {
 
     private fun displayListProduct() {
         linearLayoutManager = LinearLayoutManager(this)
-        binding.rclvListProduct.layoutManager = linearLayoutManager
-        productAdapter = ProductAdapter(this)
-        binding.rclvListProduct.adapter = productAdapter
-        goToDetailProduct()
-        goToDetailVariant()
-        pagination()
-        refreshData()
+        val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        productAdapter= ProductAdapter()
+        binding.rclvListProduct.apply {
+            layoutManager=linearLayoutManager
+            adapter=productAdapter
+            addItemDecoration(dividerItemDecoration)
+        }
+
     }
 
     private fun refreshData() {
         binding.srListProduct.setOnRefreshListener {
             currentPage = 1
             productAdapter.clearListProduct()
-            if (productAdapter.getCurrentType() == ProductAdapter.TYPE_PRODUCT) {
-                mListProductPresenter.getListProduct(currentPage)
+            if (productAdapter.modeView== ProductAdapter.TYPE_PRODUCT) {
+                val query=binding.edtListProductSearch.text.toString()
+                mListProductPresenter.getListProduct(currentPage,query)
             } else {
-                mListProductPresenter.getListVariant(currentPage)
+                val query=binding.edtListProductSearch.text.toString()
+                mListProductPresenter.getListVariant(currentPage,query)
             }
             binding.srListProduct.isRefreshing = false
             isLastPage = false
         }
+    }
+
+    private fun onClick(){
+        binding.includeListProductHeader.ivEditOrProductOrVariant.setOnClickListener { changeTypeProductOrVariant() }
+        goToDetailProduct()
+        goToDetailVariant()
+        refreshData()
+        loadMore()
+        initSearch()
     }
 
     private fun goToDetailVariant() {
@@ -200,25 +194,56 @@ class ListProductActivity : AppCompatActivity(), ListProductContracts {
             startActivity(intent)
         }
     }
-    private fun search(){
-        binding.edtListProductSearch.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+
+
+    private fun initSearch() {
+        binding.edtListProductSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val content : String = s.toString()
-                if(productAdapter.getCurrentType()==ProductAdapter.TYPE_PRODUCT){
-                    mListProductPresenter.findProduct(content)
-                }else{
-                    mListProductPresenter.findVariant(content)
+                productAdapter.clearListProduct()
+                currentPage = 1
+                //isLoading = false
+                query = s.toString()
+                //searchSubject.onNext(query)
+                if (productAdapter.modeView == ProductAdapter.TYPE_PRODUCT) {
+                    mListProductPresenter.getListProduct(currentPage, query)
+                } else {
+                    mListProductPresenter.getListVariant(currentPage, query)
                 }
-
-            }
-            override fun afterTextChanged(s: Editable?) {
-
             }
 
+            override fun afterTextChanged(s: Editable?) {}
         })
+
+//        searchSubject
+//            .debounce(200, TimeUnit.MILLISECONDS)
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe {productAdapter.clearListProduct()
+//                if (productAdapter.modeView == ProductAdapter.TYPE_PRODUCT) {
+//                mListProductPresenter.getListProduct(currentPage, query)
+//            } else {
+//                mListProductPresenter.getListVariant(currentPage, query)
+//            } }
     }
 
+    private fun changeTypeProductOrVariant() {
+        productAdapter.clearListProduct()
+        isLastPage = false
+        currentPage = 1
+        checkType = !checkType
+        if (checkType) {
+            initToolBar(resources.getString(R.string.san_pham_xml), R.drawable.ic_inventory)
+            productAdapter.modeView=ProductAdapter.TYPE_PRODUCT
+            mListProductPresenter.getListProduct(currentPage,query)
+
+        } else{
+            initToolBar(resources.getString(R.string.quan_li_kho), R.drawable.ic_product_management)
+            productAdapter.modeView=ProductAdapter.TYPE_VARIANT
+            mListProductPresenter.getListVariant(currentPage,query)
+
+
+        }
+    }
 
 }

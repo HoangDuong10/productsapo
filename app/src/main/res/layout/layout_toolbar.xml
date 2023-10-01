@@ -13,15 +13,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ivToolbarLeft"/>
+
     <TextView
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:layout_centerInParent="true"
-        android:text="@string/san_pham"
-        android:textSize="@dimen/text_size_normal"
+        android:id="@+id/tvToolbarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvToolbarTitle"/>
+        android:layout_centerInParent="true"
+        android:text="@string/san_pham_xml"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_normal"
+        android:textStyle="bold" />
     <ImageView
         app:tint="@color/light_black"
         android:visibility="gone"

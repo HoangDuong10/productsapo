@@ -1,5 +1,6 @@
 package com.example.product.api.dto
 
-class OrderSource {
+class OrderSourceDTO {
     var id:Int?=null
+    var name:String?=null
 }

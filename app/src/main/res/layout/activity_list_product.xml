@@ -28,7 +28,7 @@
         <EditText
             android:drawableStart="@drawable/ic_search"
             android:textSize="@dimen/define_dimen_16"
-            android:background="@drawable/bg_edit_text"
+            android:background="@drawable/shape_rec_edittext_bg_corner_define_dimen_20"
             android:id="@+id/edtListProductSearch"
             android:hint="@string/hint_edit_text"
             android:padding="@dimen/define_dimen_10"
@@ -89,7 +89,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/define_dimen_10"
-        android:background="@color/bg_edittext"
+        android:background="@color/edittext"
         android:padding="@dimen/define_dimen_8"
         android:text="Số lượng sản phẩm" />
     <RelativeLayout

@@ -14,7 +14,7 @@ import com.example.product.ui.model.Product
 import com.example.product.ui.model.Variant
 import com.example.product.presenter.DetailVariantPresenter
 import com.example.product.ui.adapter.DetailVariantAdapter
-import com.example.product.utils.NumberUtil.formatNoTrailingZero
+import com.example.product.utils.NumberUtil.formatNumber
 
 class DetailVariantActivity : AppCompatActivity(),DetailVariantContracts{
     companion object{
@@ -23,44 +23,41 @@ class DetailVariantActivity : AppCompatActivity(),DetailVariantContracts{
     }
     private  var productId : Int =0
     private var variantId : Int = 0
-    private lateinit var product: Product
-    private lateinit var listVariant : MutableList<Variant>
+    private  var product = Product()
+    private  var variant=Variant()
+    private  var listVariant : MutableList<Variant> = mutableListOf()
     private lateinit var adapter: DetailVariantAdapter
-    private lateinit var variant: Variant
-    private lateinit var mDetailVariantPresenter: DetailVariantPresenter
+    private lateinit var detailVariantPresenter: DetailVariantPresenter
     private lateinit var binding : ActivityDetailBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        variant = Variant()
-        listVariant = mutableListOf()
-        product = Product()
         productId = intent.getIntExtra(KEY_DATA_PRODUCT_ID,0)
         variantId = intent.getIntExtra(KEY_DATA_VARIANT_ID,0)
-        mDetailVariantPresenter = DetailVariantPresenter(this)
-        mDetailVariantPresenter.getDetailVariant(productId,variantId)
+        detailVariantPresenter = DetailVariantPresenter(this)
+        detailVariantPresenter.getDetailVariant(productId,variantId)
         initToolBar()
     }
     override fun onDestroy() {
         super.onDestroy()
-        mDetailVariantPresenter.variantDisposable?.dispose()
-        mDetailVariantPresenter.productDisposable?.dispose()
+        detailVariantPresenter.variantDisposable?.dispose()
     }
-    override fun callApiErreor() {
-        Toast.makeText(this,getString(R.string.call_api_khong_thanh_cong), Toast.LENGTH_SHORT).show()
+    override fun callApiError(message:String) {
+        Toast.makeText(this,message, Toast.LENGTH_SHORT).show()
     }
 
     override fun callDetailVariant(mVariant: Variant) {
         variant = mVariant
         if(!variant.packsize){
-            mDetailVariantPresenter.getDetailProduct(productId)
+            detailVariantPresenter.getDetailProduct(productId)
         }
         showData()
 
     }
     override fun callDetailProduct(mProduct: Product) {
         product = mProduct
+        //getListDetailVariant()
         showData()
     }
 
@@ -103,7 +100,8 @@ class DetailVariantActivity : AppCompatActivity(),DetailVariantContracts{
         binding.tvDetailName.text = variant.name
         binding.tvDetailSKU.text = variant.sku
         binding.tvDetailBarcode.text = variant.barcode
-        binding.tvDetailWeight.text = variant.weightValue?.formatNoTrailingZero()+variant.weightUnit
+        //binding.tvDetailWeight.text = variant.weightValue?.formatNoTrailingZero() +variant.weightUnit
+        binding.tvDetailWeight.text=getString(R.string.khoi_luong1, variant.weightValue?.formatNumber(), variant.weightUnit)
         binding.tvDetailUnit.text=variant.getStringUnit()
         if(!variant.opt1.isNullOrEmpty()){
             binding.layoutOpt1.visibility = View.VISIBLE
@@ -111,7 +109,7 @@ class DetailVariantActivity : AppCompatActivity(),DetailVariantContracts{
         }
         if(variant.packSizeQuantity!=null &&variant.packSizeQuantity!=0.0){
            binding.layoutUnitQuantity.visibility= View.VISIBLE
-            binding.tvDetailQuantity.text = variant.packSizeQuantity?.formatNoTrailingZero()
+            binding.tvDetailQuantity.text = variant.packSizeQuantity?.formatNumber()
         }
         if(!variant.opt2.isNullOrEmpty()){
             binding.layoutOpt2.visibility = View.VISIBLE
@@ -130,22 +128,22 @@ class DetailVariantActivity : AppCompatActivity(),DetailVariantContracts{
         }
         if(variant.taxable){
             binding.lltvDetailTax.visibility = View.VISIBLE
-            binding.tvDetailInputTax.text = variant.inputVatRate?.formatNoTrailingZero()
-            binding.tvDetailOutputTax.text = variant.outputVatRate?.formatNoTrailingZero()
+            binding.tvDetailInputTax.text = variant.inputVatRate?.formatNumber()
+            binding.tvDetailOutputTax.text = variant.outputVatRate?.formatNumber()
         }else{
             binding.lltvDetailTax.visibility = View.GONE
         }
-        binding.tvDetailRetailPrice.text=variant.getRetailPrice().formatNoTrailingZero()
-        binding.tvDetailImportPrice.text=variant.getImportPrice().formatNoTrailingZero()
-        binding.tvDetailWholesalePrice.text=variant.getWholesalePrice().formatNoTrailingZero()
+        binding.tvDetailRetailPrice.text=variant.getRetailPrice().formatNumber()
+        binding.tvDetailImportPrice.text=variant.getImportPrice().formatNumber()
+        binding.tvDetailWholesalePrice.text=variant.getWholesalePrice().formatNumber()
     }
     private fun showWarehouse(){
-        binding.tvDetailOnHand.text = variant.getTotalOnhand().formatNoTrailingZero()
-        binding.tvDetailAvailable.text = variant.getTotalAvailable().formatNoTrailingZero()
+        binding.tvDetailOnHand.text = variant.getTotalOnhand().formatNumber()
+        binding.tvDetailAvailable.text = variant.getTotalAvailable().formatNumber()
     }
     private fun showCanSell(){
         if(variant.sellable){
-            binding.ivDetailSellable.setImageResource(R.drawable.ic_check)
+            binding.ivDetailSellable.setImageResource(R.drawable.ic_check_product)
             val color = ContextCompat.getColor(this, R.color.green)
             binding.ivDetailSellable.setColorFilter(color)
             binding.tvDetailSellable.text=getString(R.string.cho_phep_ban)
@@ -162,14 +160,14 @@ class DetailVariantActivity : AppCompatActivity(),DetailVariantContracts{
         binding.rclvDetailVariantOrUnit.layoutManager = linearLayoutManager
         val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         binding.rclvDetailVariantOrUnit.addItemDecoration(dividerItemDecoration)
-        adapter = DetailVariantAdapter(listVariant ,this)
+        adapter = DetailVariantAdapter(listVariant )
         binding.rclvDetailVariantOrUnit.adapter = adapter
     }
     private fun displayImageDetailVariant(){
-        if(!variant.images.isNullOrEmpty()){
+        if(variant.images.isNotEmpty()){
             binding.layoutImage.visibility = View.GONE
             binding.ivDetailVariant.visibility=View.VISIBLE
-            Glide.with(this).load(variant.images!![0].fullPath).into(binding.ivDetailVariant)
+            Glide.with(this).load(variant.getFullPath()).into(binding.ivDetailVariant)
         }else{
             binding.ivDetailVariant.visibility=View.GONE
         }

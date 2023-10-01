@@ -3,167 +3,186 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:background="@color/black_overlay"
     android:layout_height="match_parent"
+    android:background="@color/black_overlay"
+    android:orientation="vertical"
     tools:context=".ui.createorder.CreateOrderActivity">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white">
+
         <ImageView
-            android:padding="12dp"
-            android:src="@drawable/ic_back"
+            android:id="@+id/ivCreateOrderLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/ivCreateOrderLeft"/>
+            android:padding="12dp"
+            android:src="@drawable/ic_back" />
+
         <RelativeLayout
-            android:layout_toRightOf="@+id/ivCreateOrderLeft"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="@dimen/define_dimen_12"
-            android:layout_marginStart="@dimen/define_dimen_12"
-            android:layout_marginEnd="@dimen/define_dimen_12"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="@dimen/define_dimen_12"
+            android:layout_marginTop="@dimen/define_dimen_12"
+            android:layout_marginEnd="@dimen/define_dimen_12"
+            android:layout_toRightOf="@+id/ivCreateOrderLeft">
 
             <TextView
-                android:drawableStart="@drawable/ic_search"
-                android:textSize="@dimen/define_dimen_16"
-                android:background="@drawable/bg_edit_text"
                 android:id="@+id/tvCreateOrderSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_rec_edittext_bg_corner_define_dimen_20"
+                android:drawableStart="@drawable/ic_search"
                 android:hint="@string/tim_va_them_san_pham"
                 android:padding="@dimen/define_dimen_10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:textSize="@dimen/define_dimen_16" />
+
             <View
-                android:layout_marginRight="@dimen/define_dimen_4"
-                android:background="@color/light_black"
-                android:layout_toLeftOf="@id/ivCreateOrderBarcodeScanner"
                 android:layout_width="1dp"
                 android:layout_height="@dimen/define_dimen_30"
                 android:layout_centerVertical="true"
-                />
+                android:layout_marginRight="@dimen/define_dimen_4"
+                android:layout_toLeftOf="@id/ivCreateOrderBarcodeScanner"
+                android:background="@color/light_black" />
+
             <ImageView
                 android:id="@+id/ivCreateOrderBarcodeScanner"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/define_dimen_24"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_barcode_scanner"/>
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/define_dimen_24"
+                android:src="@drawable/ic_barcode_scanner" />
 
         </RelativeLayout>
 
         <ImageView
-            android:layout_marginEnd="@dimen/define_dimen_12"
-            android:visibility="visible"
             android:id="@+id/ivCreateOrderSettingMenu"
-            app:tint="@color/light_black"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_menu_vetical"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            />
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="@dimen/define_dimen_12"
+            android:src="@drawable/ic_menu_vetical"
+            android:visibility="visible"
+            app:tint="@color/light_black" />
     </RelativeLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.1dp"
-        android:background="@color/black_overlay"/>
+        android:background="@color/black_overlay" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <androidx.recyclerview.widget.RecyclerView
-                android:background="@color/white"
+                android:id="@+id/rclvCreateOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/rclvCreateOrder"/>
+                android:background="@color/white" />
+
             <LinearLayout
                 android:id="@+id/llCreateOrderAddOrder"
-                android:padding="@dimen/define_dimen_18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:padding="@dimen/define_dimen_18">
+
                 <ImageView
-                    app:tint="@color/blue"
                     android:layout_width="@dimen/define_dimen_48"
                     android:layout_height="@dimen/define_dimen_48"
-                    android:src="@drawable/ic_cart"/>
+                    android:src="@drawable/ic_cart"
+                    app:tint="@color/blue" />
+
                 <TextView
-                    android:layout_marginTop="@dimen/define_dimen_12"
-                    android:text="@string/don_hang_cua_ban_chua_co_san_pham_nao"
-                    android:textSize="@dimen/text_size_normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:layout_marginTop="@dimen/define_dimen_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/define_dimen_12"
+                    android:text="@string/don_hang_cua_ban_chua_co_san_pham_nao"
+                    android:textSize="@dimen/text_size_normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/define_dimen_12"
                     android:text="@string/chon_san_pham"
                     android:textColor="@color/blue"
-                    android:textSize="@dimen/text_size_normal"/>
+                    android:textSize="@dimen/text_size_normal" />
 
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="@color/black_overlay"/>
+                android:background="@color/black_overlay" />
+
             <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
                 android:layout_marginTop="@dimen/define_dimen_12"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/black_overlay"/>
+                android:background="@color/black_overlay" />
+
             <LinearLayout
-                android:background="@color/white"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
                 <LinearLayout
-                    android:padding="@dimen/define_dimen_12"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/define_dimen_12">
+
                     <ImageView
                         android:layout_width="@dimen/define_dimen_24"
                         android:layout_height="@dimen/define_dimen_24"
                         android:src="@drawable/ic_gift_box"
-                        app:tint="@color/blue"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/ap_dung_khuyen_mai"
-                        android:textColor="@color/blue"
-                        android:textSize="@dimen/text_size_normal"
-                        android:layout_marginLeft="@dimen/define_dimen_12"/>
-                </LinearLayout>
-                <View
-                    android:layout_marginTop="@dimen/define_dimen_12"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/black_overlay"/>
-                <RelativeLayout
-                    android:layout_marginTop="@dimen/define_dimen_12"
-                    android:paddingRight="@dimen/define_dimen_12"
-                    android:paddingLeft="@dimen/define_dimen_12"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_normal"
-                        android:textColor="@color/black"
-                        android:text="@string/tong_so_luong"/>
+                        app:tint="@color/blue" />
 
                     <TextView
-                        android:id="@+id/tvCreateOrderTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/define_dimen_12"
+                        android:text="@string/ap_dung_khuyen_mai"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/text_size_normal" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="@dimen/define_dimen_12"
+                    android:background="@color/black_overlay" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/define_dimen_12"
+                    android:paddingLeft="@dimen/define_dimen_12"
+                    android:paddingRight="@dimen/define_dimen_12">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tong_so_luong"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_normal" />
+
+                    <TextView
+                        android:id="@+id/tvCreateOrderQuantity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -171,18 +190,20 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_normal" />
                 </RelativeLayout>
+
                 <RelativeLayout
-                    android:paddingRight="@dimen/define_dimen_12"
-                    android:paddingLeft="@dimen/define_dimen_12"
-                    android:layout_marginTop="@dimen/define_dimen_12"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/define_dimen_12"
+                    android:paddingLeft="@dimen/define_dimen_12"
+                    android:paddingRight="@dimen/define_dimen_12">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_normal"
+                        android:text="@string/tong_tien_hang"
                         android:textColor="@color/black"
-                        android:text="@string/tong_tien_hang"/>
+                        android:textSize="@dimen/text_size_normal" />
 
                     <TextView
                         android:id="@+id/tvCreateOrderTotalAmount"
@@ -193,19 +214,22 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_normal" />
                 </RelativeLayout>
+
                 <RelativeLayout
+                    android:visibility="gone"
                     android:id="@+id/rlCreateOrderTax"
-                    android:paddingRight="@dimen/define_dimen_12"
-                    android:paddingLeft="@dimen/define_dimen_12"
-                    android:layout_marginTop="@dimen/define_dimen_12"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/define_dimen_12"
+                    android:paddingLeft="@dimen/define_dimen_12"
+                    android:paddingRight="@dimen/define_dimen_12">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_normal"
+                        android:text="@string/thue"
                         android:textColor="@color/black"
-                        android:text="@string/thue"/>
+                        android:textSize="@dimen/text_size_normal" />
 
                     <TextView
                         android:id="@+id/tvCreateOrderTax"
@@ -216,18 +240,20 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_normal" />
                 </RelativeLayout>
+
                 <RelativeLayout
-                    android:paddingRight="@dimen/define_dimen_12"
-                    android:paddingLeft="@dimen/define_dimen_12"
-                    android:layout_marginTop="@dimen/define_dimen_12"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/define_dimen_12"
+                    android:paddingLeft="@dimen/define_dimen_12"
+                    android:paddingRight="@dimen/define_dimen_12">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_normal"
+                        android:text="@string/chiet_khau"
                         android:textColor="@color/blue"
-                        android:text="@string/chiet_khau"/>
+                        android:textSize="@dimen/text_size_normal" />
 
                     <TextView
                         android:id="@+id/tvCreateOrderDiscount"
@@ -238,89 +264,99 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_normal" />
                 </RelativeLayout>
+
                 <RelativeLayout
-                    android:paddingBottom="@dimen/define_dimen_12"
-                    android:paddingRight="@dimen/define_dimen_12"
-                    android:paddingLeft="@dimen/define_dimen_12"
-                    android:layout_marginTop="@dimen/define_dimen_12"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/define_dimen_12"
+                    android:paddingLeft="@dimen/define_dimen_12"
+                    android:paddingRight="@dimen/define_dimen_12"
+                    android:paddingBottom="@dimen/define_dimen_12">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_normal"
+                        android:text="@string/phi_giao_dich"
                         android:textColor="@color/blue"
-                        android:text="@string/phi_giao_dich"/>
+                        android:textSize="@dimen/text_size_normal" />
+
                     <TextView
                         android:id="@+id/tvCreateOrderTransactionFee"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_normal"
-                        android:text="0"
-                        android:layout_alignParentEnd="true"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_normal" />
                 </RelativeLayout>
             </LinearLayout>
+
             <LinearLayout
-                android:padding="@dimen/define_dimen_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/define_dimen_12"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:padding="@dimen/define_dimen_12">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_normal"
+                    android:text="@string/khach_hang"
                     android:textColor="@color/black"
-                    android:text="@string/khach_hang"/>
+                    android:textSize="@dimen/text_size_normal" />
+
                 <RelativeLayout
-                    android:layout_marginTop="@dimen/define_dimen_12"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/define_dimen_12"
+                    android:orientation="horizontal">
+
                     <ImageView
                         android:id="@+id/img_user"
-                        app:tint="@color/black_overlay"
-                        android:src="@drawable/ic_user"
                         android:layout_width="@dimen/define_dimen_24"
                         android:layout_height="@dimen/define_dimen_24"
-                        />
+                        android:src="@drawable/ic_user"
+                        app:tint="@color/black_overlay" />
+
                     <TextView
-                        android:layout_toRightOf="@+id/img_user"
-                        android:textColor="@color/blue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/define_dimen_12"
+                        android:layout_toRightOf="@+id/img_user"
                         android:text="@string/them_khach_hang"
-                        android:textSize="@dimen/text_size_normal"
-                        android:layout_marginLeft="@dimen/define_dimen_12"/>
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/text_size_normal" />
+
                     <ImageView
-                        app:tint="@color/black_overlay"
+                        android:layout_width="@dimen/define_dimen_24"
+                        android:layout_height="@dimen/define_dimen_24"
                         android:layout_alignParentRight="true"
+                        android:layout_gravity="left"
                         android:layout_weight="1"
                         android:src="@drawable/ic_next"
-                        android:layout_gravity="left"
-                        android:layout_width="@dimen/define_dimen_24"
-                        android:layout_height="@dimen/define_dimen_24"
-                        />
+                        app:tint="@color/black_overlay" />
                 </RelativeLayout>
+
                 <View
-                    android:layout_marginTop="@dimen/define_dimen_12"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/black_overlay"/>
-                <RelativeLayout
                     android:layout_marginTop="@dimen/define_dimen_12"
-                    android:orientation="horizontal"
+                    android:background="@color/black_overlay" />
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/define_dimen_12"
+                    android:orientation="horizontal">
+
                     <ImageView
                         android:id="@+id/img_price"
-                        app:tint="@color/black_overlay"
-                        android:src="@drawable/ic_price_product"
                         android:layout_width="@dimen/define_dimen_24"
                         android:layout_height="@dimen/define_dimen_24"
-                        />
+                        android:src="@drawable/ic_price_product"
+                        app:tint="@color/black_overlay" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -329,39 +365,42 @@
                         android:text="@string/gia_ban_le"
                         android:textColor="@color/blue"
                         android:textSize="@dimen/text_size_normal" />
+
                     <ImageView
-                        app:tint="@color/black_overlay"
-                        android:layout_alignParentRight="true"
-                        android:layout_weight="1"
-                        android:src="@drawable/ic_next"
-                        android:layout_gravity="left"
                         android:layout_width="@dimen/define_dimen_24"
                         android:layout_height="@dimen/define_dimen_24"
-                        />
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_next"
+                        app:tint="@color/black_overlay" />
                 </RelativeLayout>
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/black_overlay" />
+
             <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
                 android:layout_marginTop="@dimen/define_dimen_12"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
                 android:background="@color/black_overlay" />
+
             <RelativeLayout
-                android:padding="@dimen/define_dimen_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:padding="@dimen/define_dimen_12">
+
                 <ImageView
                     android:id="@+id/img_payment"
-                    app:tint="@color/black_overlay"
-                    android:src="@drawable/ic_payment"
                     android:layout_width="@dimen/define_dimen_24"
                     android:layout_height="@dimen/define_dimen_24"
-                    />
+                    android:src="@drawable/ic_payment"
+                    app:tint="@color/black_overlay" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -371,47 +410,52 @@
                     android:text="@string/chon_phuong_thuc_thanh_toan"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_normal" />
+
                 <ImageView
-                    app:tint="@color/black_overlay"
-                    android:layout_alignParentRight="true"
-                    android:layout_weight="1"
-                    android:src="@drawable/ic_next"
-                    android:layout_gravity="left"
                     android:layout_width="@dimen/define_dimen_24"
                     android:layout_height="@dimen/define_dimen_24"
-                    />
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="left"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_next"
+                    app:tint="@color/black_overlay" />
             </RelativeLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/black_overlay" />
+
             <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
                 android:layout_marginTop="@dimen/define_dimen_12"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
                 android:background="@color/black_overlay" />
+
             <RelativeLayout
-                android:padding="@dimen/define_dimen_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:padding="@dimen/define_dimen_12">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/them_ghi_chu"
                     android:textColor="@color/blue"
                     android:textSize="@dimen/text_size_normal" />
+
                 <ImageView
-                    app:tint="@color/blue"
-                    android:layout_alignParentRight="true"
-                    android:layout_weight="1"
-                    android:src="@drawable/ic_note"
-                    android:layout_gravity="left"
                     android:layout_width="@dimen/define_dimen_24"
                     android:layout_height="@dimen/define_dimen_24"
-                    />
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="left"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_note"
+                    app:tint="@color/blue" />
             </RelativeLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
@@ -423,67 +467,77 @@
                 android:layout_marginTop="@dimen/define_dimen_12"
                 android:background="@color/black_overlay" />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
+
     <LinearLayout
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:orientation="vertical">
+
         <RelativeLayout
-            android:layout_marginTop="@dimen/define_dimen_12"
-            android:paddingRight="@dimen/define_dimen_12"
-            android:paddingLeft="@dimen/define_dimen_12"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/define_dimen_12"
+            android:paddingLeft="@dimen/define_dimen_12"
+            android:paddingRight="@dimen/define_dimen_12">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_normal"
+                android:text="@string/tam_tinh"
                 android:textColor="@color/black"
-                android:text="@string/tam_tinh"/>
+                android:textSize="@dimen/text_size_normal" />
+
             <TextView
                 android:id="@+id/tvCreateOrderTotalMoney"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_normal"
-                android:text="0"
-                android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_normal" />
         </RelativeLayout>
+
         <LinearLayout
-            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/define_dimen_12"
             android:layout_marginBottom="@dimen/define_dimen_12"
-            android:paddingRight="@dimen/define_dimen_12"
+            android:orientation="horizontal"
             android:paddingLeft="@dimen/define_dimen_12"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-           <androidx.cardview.widget.CardView
-               android:layout_weight="8"
-               android:layout_centerVertical="true"
-               app:cardCornerRadius="@dimen/define_dimen_10"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content">
-               <Button
-                   android:id="@+id/btnCreateOrder"
-                   android:text="@string/tao_don_va_giao_hang"
-                   android:textColor="@color/white"
-                   android:textAllCaps="false"
-                   android:textSize="@dimen/text_size_normal"
-                   android:background="@color/blue"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"/>
-           </androidx.cardview.widget.CardView>
-           <ImageButton
-               android:layout_marginLeft="@dimen/define_dimen_5"
-               android:layout_marginRight="@dimen/define_dimen_18"
-               android:layout_centerVertical="true"
-               android:scaleType="fitXY"
-               android:layout_alignParentRight="true"
-               android:layout_width="@dimen/define_dimen_50"
-               android:layout_height="@dimen/define_dimen_50"
-               android:src="@drawable/ic_three_dots"/>
+            android:paddingRight="@dimen/define_dimen_12">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_weight="8"
+                app:cardCornerRadius="@dimen/define_dimen_10">
+
+                <Button
+                    android:alpha="0.5"
+                    android:enabled="false"
+                    android:id="@+id/btnCreateOrder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue"
+                    android:text="@string/tao_don_va_giao_hang"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_normal" />
+            </androidx.cardview.widget.CardView>
+
+            <ImageButton
+                android:layout_width="@dimen/define_dimen_50"
+                android:layout_height="@dimen/define_dimen_50"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/define_dimen_5"
+                android:layout_marginRight="@dimen/define_dimen_18"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_three_dots" />
         </LinearLayout>
     </LinearLayout>
 

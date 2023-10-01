@@ -1,7 +1,9 @@
 package com.example.product.api.response
 
-import com.example.product.api.dto.OrderSource
+import com.example.product.api.dto.OrderSourceDTO
+import com.google.gson.annotations.SerializedName
 
 class OrderSourceResponse {
-    var order_sources:MutableList<OrderSource>?=null
+    @SerializedName("order_sources")
+    var orderSources:MutableList<OrderSourceDTO>?=null
 }

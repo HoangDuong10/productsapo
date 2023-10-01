@@ -1,6 +1,7 @@
 package com.example.product.ui.selectvariant
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,83 +11,98 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.product.R
 import com.example.product.ui.adapter.SelectVariantAdapter
 import com.example.product.databinding.ActivitySelectVariantBinding
 import com.example.product.ui.model.MetaData
-import com.example.product.ui.model.Variant
 import com.example.product.presenter.SelectVariantPresenter
 import com.example.product.ui.createorder.CreateOrderActivity
-import com.example.product.ui.AppConfig
-import com.example.product.ui.adapter.ProductAdapter
+import com.example.product.ui.model.OrderLineItem
 import com.example.product.widget.PaginationScrollListener
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 
 class SelectVariantActivity : AppCompatActivity(), SelectVariantContracts {
-    companion object{
-        const val KEY_LISTVARIANT="KEY_LISTVARIANT"
-
+    companion object {
+        const val KEY_LINE_ITEM = "KEY_DATA_LINE_ITEM"
+        const val SWITCH_STATE = "KEY_SWITCH_STATE"
+        const val MY_PREFS = "MY_PREFS"
     }
+    private val sharedPreferences by lazy {
+        getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE)
+    }
+
+    private val searchSubject = PublishSubject.create<String>()
     private var totalVariant: Int = 0
     private var isLoading: Boolean = false
     private var isLastPage: Boolean = false
     private var currentPage = 1
+    private var query =""
+    private var orderLineItem: MutableList<OrderLineItem>? = null
+    private var lineItems: MutableList<OrderLineItem>? = null
+    private  var mOrderLineItem: MutableList<OrderLineItem> = mutableListOf()
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var binding: ActivitySelectVariantBinding
-    private lateinit var mlistVariant : MutableList<Variant>
-    private lateinit var listTotal : MutableList<String>
     private lateinit var mSelectVariantPresenter: SelectVariantPresenter
     private lateinit var adapter: SelectVariantAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySelectVariantBinding.inflate(layoutInflater)
-        val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        binding.rclvSelectVariant.addItemDecoration(dividerItemDecoration)
-        mSelectVariantPresenter = SelectVariantPresenter(this)
-        mSelectVariantPresenter.getListVariant(currentPage)
-        mlistVariant = mutableListOf()
-        listTotal = mutableListOf()
-        backPressed()
-        search()
         setContentView(binding.root)
+        mSelectVariantPresenter = SelectVariantPresenter(this)
+        val query = binding.edtSelectVariantSearch.text.toString()
+        mSelectVariantPresenter.getListVariant(currentPage, query)
+        lineItems = intent.getSerializableExtra(KEY_LINE_ITEM) as? ArrayList<OrderLineItem>
+        displayListVariant()
+        onClick()
+
     }
 
 
-    override fun setListVariant(mListVariant: MutableList<Variant>, metaData: MetaData) {
-        totalVariant = metaData.total!!
+    override fun setListVariant(listOrderLineItem: MutableList<OrderLineItem>, metaData: MetaData) {
+        orderLineItem=listOrderLineItem
+        if(!lineItems.isNullOrEmpty()){
+            lineItems?.let { updateQuantity(it,listOrderLineItem) }
+        }
+        if(mOrderLineItem.isNotEmpty()){
+            updateQuantity(mOrderLineItem,listOrderLineItem)
+        }
+        totalVariant = metaData.total
         if (currentPage == 1) {
-            displayListVariant(mListVariant)
+            adapter.addList(listOrderLineItem)
         } else {
             adapter.removeFooterLoading()
             isLoading = false
-            adapter.addList(mListVariant)
+            adapter.addList(listOrderLineItem)
         }
-        if (currentPage < currentPage * AppConfig.limit) {
-            adapter.addFooterLoading()
-        } else {
+        if (!metaData.isLoadMore()) {
             isLastPage = true
         }
     }
 
-    override fun callApiErreor() {
-        Toast.makeText(this,getString(R.string.call_api_khong_thanh_cong), Toast.LENGTH_SHORT).show()
+    override fun callApiErreor(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun displayListVariant(listVariant: MutableList<Variant>) {
+
+    private fun displayListVariant() {
+        val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        binding.rclvSelectVariant.addItemDecoration(dividerItemDecoration)
         linearLayoutManager = LinearLayoutManager(this)
         binding.rclvSelectVariant.layoutManager = linearLayoutManager
-        adapter = SelectVariantAdapter(listVariant, this)
+        adapter = SelectVariantAdapter()
         binding.rclvSelectVariant.adapter = adapter
-        goToCreateOrder()
-        pagination()
+
     }
 
-    private fun pagination() {
-        binding.rclvSelectVariant.addOnScrollListener(object :
+    private fun loadMore() {
+        binding.rclvSelectVariant.addOnScrollListener(object:
             PaginationScrollListener(linearLayoutManager) {
             override fun loadMoreItem() {
+                adapter.addFooterLoading()
                 isLoading = true
                 currentPage += 1
-                mSelectVariantPresenter.getListVariant(currentPage)
+                mSelectVariantPresenter.getListVariant(currentPage, query)
             }
 
             override fun isLoading(): Boolean {
@@ -98,62 +114,142 @@ class SelectVariantActivity : AppCompatActivity(), SelectVariantContracts {
             }
         })
     }
-    private fun onClickSendVariant(variant: MutableList<Variant>){
-        val intent = Intent(this,CreateOrderActivity::class.java)
-        intent.putExtra(KEY_LISTVARIANT,ArrayList(variant))
-        setResult(Activity.RESULT_OK, intent)
-        finish()
+
+    private fun onClick() {
+        binding.ivSelectVariantLeft.setOnClickListener { finish()}
+        binding.btnSelectVariantReselect.setOnClickListener {resetQuantity() }
+        //binding.scSelectVariantChange.setOnClickListener { changeSwitchCompat() }
+        changeSwitchCompat()
+        initSearch()
+        goToCreateOrder()
+        loadMore()
     }
-    private fun onClickSendListVariant(variant: MutableList<Variant>){
-        binding.btnSelectVariantFinished.setOnClickListener{
-            val intent = Intent(this,CreateOrderActivity::class.java)
-            intent.putExtra(KEY_LISTVARIANT,ArrayList(variant))
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+    private fun changeSwitchCompat(){
+        val savedSwitchState = sharedPreferences.getBoolean(SWITCH_STATE, false)
+        binding.scSelectVariantChange.isChecked = savedSwitchState
+        if(savedSwitchState){
+            binding.llSelectVariantBottom.visibility=View.VISIBLE
+        }else{
+            binding.llSelectVariantBottom.visibility=View.GONE
         }
-    }
-    private fun backPressed() {
-        binding.ivSelectVariantLeft.setOnClickListener {
-            finish()
-        }
-    }
-    private fun goToCreateOrder(){
-        adapter.onClickItemVariant= { idVariant, variant ->
-            if (binding.scSelectVariantChange.isChecked) {
-                binding.llSelectVariantBottom.visibility=View.VISIBLE
-                if (!mlistVariant.contains(variant)) {
-                    variant.total = 1.0
-                    mlistVariant.add(variant)
-                } else {
-                    val vari = mlistVariant.firstOrNull { it.id == idVariant }
-//                        var index = mlistVariant.indexOfFirst { it.id == id }
-                    if (vari != null) {
-                        vari.total = vari.total!! + 1
-                    }
-                }
-                onClickSendListVariant(mlistVariant)
+        binding.scSelectVariantChange.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.llSelectVariantBottom.visibility = View.VISIBLE
             } else {
-                binding.llSelectVariantBottom.visibility=View.GONE
-                variant.total = 1.0
-                mlistVariant.add(variant)
-                onClickSendVariant(mlistVariant)
+                binding.llSelectVariantBottom.visibility = View.GONE
             }
+            sharedPreferences.edit().putBoolean(SWITCH_STATE, isChecked).apply()
         }
     }
-    private fun search(){
+
+    private fun resetQuantity(){
+        for (item in mOrderLineItem) {
+            item.quantity = 0.0
+        }
+        lineItems?.let { it1 -> updateQuantity(it1,mOrderLineItem) }
+        //updateQuantity(mOrderLineItem,listOrderLineItem)
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun initSearch() {
         binding.edtSelectVariantSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val content : String = s.toString()
-                mSelectVariantPresenter.findVariant(content)
+                adapter.clearListVariant()
+
+                query= s.toString()
+                currentPage = 1
+                searchSubject.onNext(query)
             }
+
             override fun afterTextChanged(s: Editable?) {
 
             }
 
+
         })
+        searchSubject
+            .debounce(200, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { mSelectVariantPresenter.getListVariant(currentPage, query) }
     }
 
+    private fun goToCreateOrder() {
+        adapter.onClickItemVariant = { orderLineItem ->
+            mOrderLineItem.find {it.variant.id==orderLineItem.variant.id} ?.let {
+                 mOrderLineItem.remove(it)
+             }
+
+            if (binding.scSelectVariantChange.isChecked) {
+                if (!mOrderLineItem.contains(orderLineItem)) {
+                    mOrderLineItem.add(orderLineItem)
+
+                }
+            } else {
+                mOrderLineItem.add(orderLineItem)
+                val intent = Intent(this, CreateOrderActivity::class.java)
+                intent.putExtra(KEY_LINE_ITEM, ArrayList(mOrderLineItem))
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
+        }
+
+        binding.btnSelectVariantFinished.setOnClickListener {
+
+            mOrderLineItem.removeAll { it.quantity == 0.0 }
+            val intent = Intent(this, CreateOrderActivity::class.java)
+            intent.putExtra(KEY_LINE_ITEM, ArrayList(mOrderLineItem))
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
+    }
+
+    private fun updateQuantity(sourceList:MutableList<OrderLineItem>, targetList: MutableList<OrderLineItem>) {
+        for (item in sourceList) {
+            val matchingItem = targetList.find {item.variant.id == it.variant.id }
+            matchingItem?.quantity = item.quantity
+        }
+    }
 }
+
+
+
+
+
+//    private fun changeQuantity1(array1: MutableList<OrderLineItem>, listOrderLineItem: MutableList<OrderLineItem>) {
+//        val intent = intent
+//        val lineItems = intent.getSerializableExtra(KEY_LINE_ITEM) as? ArrayList<OrderLineItem>
+//        if (lineItems != null) {
+//            array1.addAll(lineItems)
+//        }
+//        for (item1 in array1) {
+//            for (item2 in listOrderLineItem) {
+//                if (item1.variant.id == item2.variant.id) {
+//                    item2.quantity = item1.quantity
+//                }
+//            }
+//        }
+//
+//    }
+
+
+//    private fun onClickSendVariant(orderLineItem:  MutableList<OrderLineItem>){
+//        val intent = Intent(this,CreateOrderActivity::class.java)
+//        intent.putExtra(KEY_LISTVARIANT,ArrayList(orderLineItem))
+//        setResult(Activity.RESULT_OK, intent)
+//        finish()
+//    }
+//    private fun onClickSendListVariant(orderLineItem: MutableList<OrderLineItem>){
+//        binding.btnSelectVariantFinished.setOnClickListener{
+//            orderLineItem.removeAll { it.quantity == 0.0 }
+//            val intent = Intent(this,CreateOrderActivity::class.java)
+//            intent.putExtra(KEY_LISTVARIANT,ArrayList(orderLineItem))
+//            setResult(Activity.RESULT_OK, intent)
+//            finish()
+//        }
+//    }
+
+
 

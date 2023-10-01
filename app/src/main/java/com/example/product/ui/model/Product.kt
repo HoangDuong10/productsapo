@@ -1,7 +1,6 @@
 package com.example.product.ui.model
 
 import com.example.product.ui.AppConfig
-import com.example.product.utils.NumberUtil.formatNoTrailingZero
 
 class Product {
     var  name: String?=null
@@ -28,17 +27,22 @@ class Product {
         }
         return brand!!
     }
-    fun getStringDescription():String{
-        if(description.isNullOrEmpty()){
+    fun getStringDescription(): String {
+        if (description.isNullOrEmpty()) {
             return AppConfig.InValidText
         }
-        val result = description!!.replace("<[^>]+>".toRegex(), "")
-        return result
+        return description!!.replace("<[^>]+>".toRegex(), "")
     }
     fun getTotalOnhand(): Double {
         var count=0.0
         count+=variants.sumOf { it -> it.inventories.sumOf { it.onHand!! } }
         return count
+    }
+    fun getFullPath(): String? {
+        if(images.isNotEmpty()){
+            return images[0].fullPath
+        }
+        return null
     }
 
 }

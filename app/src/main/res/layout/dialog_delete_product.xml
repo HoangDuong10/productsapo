@@ -16,8 +16,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <TextView
-        android:layout_marginLeft="@dimen/define_dimen_12"
-        android:layout_marginTop="@dimen/define_dimen_12"
+       android:padding="@dimen/define_dimen_12"
         android:gravity="center"
         android:id="@+id/tvDialogDeleteProductContent"
         android:textSize="@dimen/text_size_normal"
@@ -29,9 +28,11 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDialogDeleteProductTitle"/>
     <Button
+        android:textSize="@dimen/text_size_normal"
+        android:textAllCaps="false"
         android:layout_marginTop="@dimen/define_dimen_12"
         android:text="@string/thoat"
-        android:background="@drawable/table_divider"
+        android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
         android:id="@+id/btnDialogDeleteProductCancel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -39,9 +40,11 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/btnDialogDeleteProductConfirm"/>
     <Button
+        android:textAllCaps="false"
+        android:textSize="@dimen/text_size_normal"
         android:layout_marginTop="@dimen/define_dimen_12"
         android:text="@string/dong_y"
-        android:background="@drawable/table_divider"
+        android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         android:id="@+id/btnDialogDeleteProductConfirm"
         android:layout_width="0dp"

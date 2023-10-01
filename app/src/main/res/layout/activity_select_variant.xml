@@ -30,7 +30,7 @@
             <EditText
                 android:drawableStart="@drawable/ic_search"
                 android:textSize="@dimen/define_dimen_16"
-                android:background="@drawable/bg_edit_text"
+                android:background="@drawable/shape_rec_edittext_bg_corner_define_dimen_20"
                 android:id="@+id/edtSelectVariantSearch"
                 android:hint="@string/tim_va_them_san_pham"
                 android:padding="@dimen/define_dimen_10"
@@ -72,7 +72,7 @@
         android:background="@color/black_overlay"/>
     <RelativeLayout
         android:padding="@dimen/define_dimen_12"
-        android:background="@color/bg_edittext"
+        android:background="@color/edittext"
         android:layout_marginTop="@dimen/define_dimen_12"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -89,8 +89,8 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_down"/>
         <androidx.appcompat.widget.SwitchCompat
-            app:track="@drawable/track_swich"
-            android:thumb="@drawable/thumb_swich"
+            app:track="@drawable/selector_rec_black_overlay_color_light_blue_selected_cornor_define_dimen_12"
+            android:thumb="@drawable/selector_cir_white_color_blue_selected"
             android:layout_centerVertical="true"
             android:id="@+id/scSelectVariantChange"
             android:layout_width="wrap_content"
@@ -116,6 +116,7 @@
         android:layout_height="0.1dp"
         />
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/llSelectVariantBottom"
         android:alpha="0.8"
         android:orientation="horizontal"
@@ -127,10 +128,10 @@
             android:id="@+id/btnSelectVariantReselect"
             android:textAllCaps="false"
             android:layout_weight="1"
-            android:text="@string/huy"
+            android:text="@string/chon_lai"
             android:textSize="@dimen/text_size_normal"
             android:textColor="@color/blue"
-            android:background="@drawable/custom_bg_button_left"
+            android:background="@drawable/shape_rec_white_bg_blue_stroke_corner_topleft_bottomleft_define_dimen_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <Button
@@ -140,7 +141,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/xong"
-            android:background="@drawable/custom_bg_button_right"
+            android:background="@drawable/shape_rec_blue_bg_blue_stroke_corner_topright_bottomright_define_dimen_10"
             android:textSize="@dimen/text_size_normal"
             android:textColor="@color/white"/>
     </LinearLayout>

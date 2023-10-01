@@ -1,9 +1,9 @@
 package com.example.product.ui.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
@@ -14,138 +14,114 @@ import com.example.product.databinding.ItemProductBinding
 import com.example.product.databinding.ItemVariantBinding
 import com.example.product.ui.model.Product
 import com.example.product.ui.model.Variant
-import com.example.product.utils.NumberUtil.formatNoTrailingZero
+import com.example.product.utils.NumberUtil.formatNumber
 
-class ProductAdapter(var mContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ProductAdapter : RecyclerView.Adapter<ViewHolder>() {
     companion object {
         const val TYPE_PRODUCT: Int = 1
         const val TYPE_VARIANT: Int = 2
         const val TYPE_LOADING: Int = 3
     }
-
-    private var listProduct: MutableList<Product> = mutableListOf()
-    private var listVariant: MutableList<Variant> = mutableListOf()
     var onClickItemProduct: ((idProduct: Int) -> Unit)? = null
     var onClickItemVariant: ((idProduct: Int,idVariant:Int) -> Unit)? = null
     var modeView = TYPE_PRODUCT
     private var isLoadingAdd: Boolean = false
-    fun getCurrentType(): Int {
-        return modeView
-    }
-
+    private var listData:MutableList<Any> = mutableListOf()
     override fun getItemViewType(position: Int): Int {
-        if ((position == listProduct.size - 1 && isLoadingAdd) || (position == listVariant.size - 1&&isLoadingAdd)) {
+        if ((position == listData.size - 1 && isLoadingAdd)) {
             return TYPE_LOADING
         }
         return modeView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        if (TYPE_LOADING == viewType) {
+        return if (TYPE_LOADING == viewType) {
             val loadingBinding = ItemLoadingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return LoadingViewHolder(loadingBinding)
+            LoadingViewHolder(loadingBinding)
         } else {
-            if (modeView == TYPE_PRODUCT) {
-                return ProductViewHolder(binding)
+            if (viewType == TYPE_PRODUCT) {
+                val binding = ItemProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                ProductViewHolder(binding)
             } else {
                 val loadingBinding = ItemVariantBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                return VariantViewHolder(loadingBinding)
+                VariantViewHolder(loadingBinding)
             }
         }
-         return ProductViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-        return if (modeView == TYPE_PRODUCT) {
-            listProduct.size
-        } else {
-            listVariant.size
-        }
+        return listData.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder.itemViewType == TYPE_PRODUCT) {
-            val productViewHolder: ProductViewHolder = holder as ProductViewHolder
-            productViewHolder.productBinding.tvProductName.text = listProduct[position].name
-            productViewHolder.productBinding.tvProductCountVariant.text = listProduct[position].variants.size.toString()
-            if (listProduct[position].images.isNotEmpty()) {
-                Glide.with(mContext).load(listProduct[position].images[0].fullPath).into(productViewHolder.productBinding.ivProduct)
-            } else {
-                productViewHolder.productBinding.ivProduct.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_empty))
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (holder is ProductViewHolder) {
+            holder.bind(listData[position] as Product)
+            holder.itemView.setOnClickListener{
+                val product=listData[position] as Product
+                onClickItemProduct?.invoke(product.id!!)
             }
-            productViewHolder.productBinding.tvProductCountOnHand.text=listProduct[position].getTotalOnhand().formatNoTrailingZero()
-            productViewHolder.productBinding.rlProductItem.setOnClickListener{
-                onClickItemProduct?.invoke(listProduct[position].id!!)
-            }
-        } else if(holder.itemViewType == TYPE_VARIANT) {
-            val variantViewHolder: VariantViewHolder = holder as VariantViewHolder
-            variantViewHolder.variantBinding.tvVariantName.text = listVariant[position].name
-            if (!listVariant[position].images.isNullOrEmpty()) {
-                Glide.with(mContext).load(listVariant[position].images?.get(0)?.fullPath).into(variantViewHolder.variantBinding.ivVariant)
-            } else {
-                variantViewHolder.variantBinding.ivVariant.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_empty))
-            }
-            variantViewHolder.variantBinding.tvVariantSKU.text = listVariant[position].sku
-
-            variantViewHolder.variantBinding.tvVariantOnHand.text = listVariant[position].getTotalOnhand().formatNoTrailingZero()
-            variantViewHolder.variantBinding.tvVariantRetailPrice.text=listVariant[position].getRetailPrice().formatNoTrailingZero()
-            variantViewHolder.variantBinding.rlVariantItem.setOnClickListener{
-                onClickItemVariant?.invoke(listVariant[position].productId!!,listVariant[position].id!!)
+        } else if(holder is VariantViewHolder) {
+            holder.bind(listData[position] as Variant)
+            holder.itemView.setOnClickListener{
+                val variant = listData[position] as Variant
+                onClickItemVariant?.invoke(variant.productId!!,variant.id!!)
             }
         }
     }
     fun addListProduct(data: List<Any>) {
-        if (modeView == TYPE_PRODUCT) {
-            this.listProduct.addAll(data as List<Product>)
-        } else {
-            this.listVariant.addAll(data as List<Variant>)
-        }
-    }
-
-    fun setData(type: Int, data: List<Any>) {
-        if (type == TYPE_PRODUCT) {
-            listProduct.clear()
-            listProduct.addAll(data as List<Product>)
-            modeView= TYPE_PRODUCT
-        } else{
-            listVariant.clear()
-            listVariant.addAll(data as List<Variant>)
-            modeView= TYPE_VARIANT
-        }
+        val positionStart=listData.size
+        listData.addAll(data)
+        notifyItemRangeInserted(positionStart, data.size)
 
     }
 
     fun addFooterLoading() {
         isLoadingAdd = true
-        if (modeView == TYPE_PRODUCT) {
-            listProduct.add(Product())
-        } else {
-            listVariant.add((Variant()))
-        }
-
+        listData.add(Variant())
+        notifyItemInserted(listData.lastIndex)
     }
 
     fun remoteFooterLoading() {
         isLoadingAdd = false
-        if (modeView == TYPE_PRODUCT) {
-            val position = listProduct.size - 1
-            listProduct.removeAt(position)
-            notifyItemRemoved(position)
-        } else {
-            val position = listVariant.size - 1
-            listVariant.removeAt(position)
-            notifyItemRemoved(position)
-        }
+        val position =listData.size-1
+        listData.removeAt(position)
+        notifyItemRemoved(position)
 
     }
     fun clearListProduct() {
-        listProduct.clear()
-        listVariant.clear()
-
+        val itemCount = listData.size
+        listData.clear()
+        notifyItemRangeRemoved(0, itemCount)
     }
-    class ProductViewHolder(val productBinding: ItemProductBinding) : RecyclerView.ViewHolder(productBinding.root){}
-    class LoadingViewHolder(loadingBinding: ItemLoadingBinding) : RecyclerView.ViewHolder(loadingBinding.root) {}
-    class VariantViewHolder(var variantBinding: ItemVariantBinding) : RecyclerView.ViewHolder(variantBinding.root){}
+    class ProductViewHolder( productBinding: ItemProductBinding) : ViewHolder(productBinding.root){
+        private var ivProduct: ImageView = productBinding.ivProduct
+        private var tvName : TextView=productBinding.tvProductName
+        private var tvCountVariant:TextView=productBinding.tvProductCountVariant
+        private var tvOnHand:TextView=productBinding.tvProductCountOnHand
+        fun bind(product: Product){
+            tvName.text = product.name
+            tvCountVariant.text = product.variants.size.toString()
+            Glide.with(ivProduct.context).load(product.getFullPath()).placeholder(R.drawable.ic_empty).error(R.drawable.ic_empty).into(ivProduct)
+            tvOnHand.text=product.getTotalOnhand().formatNumber()
+
+        }
+    }
+
+    class VariantViewHolder( variantBinding: ItemVariantBinding) : ViewHolder(variantBinding.root){
+        private var ivVariant: ImageView = variantBinding.ivVariant
+        private var tvVariantName : TextView=variantBinding.tvVariantName
+        private var tvSKU:TextView=variantBinding.tvSKU
+        private var tvVariantOnHand:TextView=variantBinding.tvVariantOnHand
+        private var tvVariantRetailPrice:TextView=variantBinding.tvVariantRetailPrice
+
+        fun bind(variant:Variant){
+            tvVariantName.text = variant.name
+            Glide.with(ivVariant.context).load(variant.getFullPath()).placeholder(R.drawable.ic_empty).error(R.drawable.ic_empty).into(ivVariant)
+            tvSKU.text = variant.sku
+            tvVariantOnHand.text = variant.getTotalOnhand().formatNumber()
+            tvVariantRetailPrice.text=variant.getRetailPrice().formatNumber()
+        }
+    }
+    class LoadingViewHolder(loadingBinding: ItemLoadingBinding) : ViewHolder(loadingBinding.root) {}
 }
 

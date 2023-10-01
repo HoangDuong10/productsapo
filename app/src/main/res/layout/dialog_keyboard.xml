@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@drawable/table_divider"
+    android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_height="match_parent">
@@ -15,7 +15,7 @@
        android:textSize="@dimen/text_size_normal"/>
 
    <TextView
-       android:id="@+id/tvDialogKeybordTotal"
+       android:id="@+id/tvDialogKeybordQuantity"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:gravity="center"
@@ -47,7 +47,7 @@
              android:padding="@dimen/define_dimen_8"
              android:layout_weight="3"
              android:layout_column="1"
-             android:background="@drawable/table_divider"
+             android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
          <androidx.appcompat.widget.AppCompatButton  android:text="2"
@@ -56,7 +56,7 @@
              android:padding="@dimen/define_dimen_8"
              android:layout_weight="3"
              android:layout_column="2"
-             android:background="@drawable/table_divider"
+             android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
          <androidx.appcompat.widget.AppCompatButton  android:text="3"
@@ -65,7 +65,7 @@
              android:layout_weight="3"
              android:gravity="center"
              android:padding="@dimen/define_dimen_8"
-             android:background="@drawable/table_divider"
+             android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
       </TableRow>
@@ -76,7 +76,7 @@
              android:layout_column="1"
              android:layout_weight="3"
              android:padding="@dimen/define_dimen_8"
-             android:background="@drawable/table_divider"
+             android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
          <androidx.appcompat.widget.AppCompatButton  android:text="5"
@@ -85,7 +85,7 @@
              android:padding="@dimen/define_dimen_8"
              android:layout_column="2"
              android:layout_weight="3"
-             android:background="@drawable/table_divider"
+             android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
          <androidx.appcompat.widget.AppCompatButton  android:text="6"
@@ -94,7 +94,7 @@
              android:padding="@dimen/define_dimen_8"
              android:layout_weight="3"
              android:layout_column="3"
-             android:background="@drawable/table_divider"
+             android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
       </TableRow>
@@ -105,7 +105,7 @@
              android:layout_column="1"
              android:padding="@dimen/define_dimen_8"
              android:layout_weight="3"
-             android:background="@drawable/table_divider"
+             android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
          <androidx.appcompat.widget.AppCompatButton  android:text="8"
@@ -114,7 +114,7 @@
              android:layout_column="2"
              android:layout_weight="3"
              android:padding="@dimen/define_dimen_8"
-             android:background="@drawable/table_divider"
+             android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
          <androidx.appcompat.widget.AppCompatButton  android:text="9"
@@ -123,7 +123,7 @@
              android:layout_column="3"
              android:padding="@dimen/define_dimen_8"
              android:layout_weight="3"
-             android:background="@drawable/table_divider"
+             android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
       </TableRow>
@@ -134,7 +134,7 @@
              android:padding="@dimen/define_dimen_8"
              android:layout_column="1"
              android:layout_weight="3"
-             android:background="@drawable/table_divider"
+             android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
          <androidx.appcompat.widget.AppCompatButton  android:text="0"
@@ -143,7 +143,7 @@
              android:layout_weight="3"
              android:layout_column="2"
              android:padding="@dimen/define_dimen_8"
-             android:background="@drawable/table_divider"
+             android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
              android:textColor="@color/black"
              android:textSize="@dimen/text_size_normal"/>
          <ImageButton
@@ -152,7 +152,7 @@
              android:layout_column="3"
              android:layout_weight="3"
              android:layout_height="match_parent"
-             android:background="@drawable/table_divider"
+             android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
              android:src="@drawable/ic_backspace"/>
       </TableRow>
       <TableRow>
@@ -164,11 +164,11 @@
              android:layout_column="1"
              android:textSize="@dimen/text_size_normal"
              android:textColor="@color/blue"
-             android:background="@drawable/table_divider"
+             android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"/>
          <androidx.appcompat.widget.AppCompatButton
-             android:background="@drawable/table_divider"
+             android:background="@drawable/shape_rec_white_bg_black_overlay_stroke_corner_define_dimen_05"
              android:id="@+id/btnDialogBoardConfirm"
              android:textAllCaps="false"
              android:layout_weight="1"

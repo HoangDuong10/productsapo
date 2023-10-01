@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Product</string>
-    <string name="san_pham">Sản phẩm</string>
+    <string name="san_pham">%s Sản phẩm</string>
+    <string name="san_pham_xml">Sản phẩm</string>
     <string name="danh_sach_san_pham">Danh sách sản phẩm</string>
     <string name="nhap_hang">Nhập hàng</string>
     <string name="kiem_hang">Kiểm hàng</string>
@@ -9,9 +10,6 @@
     <string name="in_tem_ma_vach">In tem ma vạch</string>
     <string name="hint_edit_text">Tên, SKU, Barcode</string>
     <string name="tat_ca_loai_san_pham">Tất cả loại sản phẩm</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_detail_product">DetailProductActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -79,18 +77,24 @@
     <string name="thue">Thuế</string>
     <string name="call_api_khong_thanh_cong">Call api không thành công</string>
     <string name="call_api_thanh_cong">Call api thành công</string>
-    <string name="phien_ban"> Phiên bản</string>
+    <string name="tao_don_hang_thanh_cong">Tạo đơn hàng thành công</string>
+    <string name="phien_ban">%s Phiên bản</string>
     <string name="quan_li_kho">Quản lí kho</string>
     <string name="khong_cho_phep_ban">Không cho phép bán</string>
     <string name="chi_tiet_san_pham">Chi tiết sản phẩm</string>
     <string name="ngung_giao_dich">Ngừng giao dịch</string>
     <string name="da_bao_gom_thue">Đã bao gồm thuế</string>
     <string name="SKU">SKU:</string>
-    <string name="ban_co_chac_chan_muon_xoa_san_pham">Bạn có chắc chán muốn xóa sản phẩm</string>
+    <string name="ban_co_chac_chan_muon_xoa_san_pham_nay_ra_khoi_don_hang">Bạn có chắc chán muốn xóa sản phẩm %s ra khỏi đơn hàng</string>
     <string name="nay_ra_khoi_don_hang"> này ra khỏi đơn hàng?</string>
     <string name="thoat">Thoát</string>
     <string name="dong_y">Đồng ý</string>
     <string name="khong_co_ket_qua_phu_hop">Không có kết quả phù hợp</string>
     <string name="vui_long_nhap_tu_khoa_khac_de_tim_kiem">Vui lòng nhập từ khóa khác để tìm kiếm</string>
     <string name="chi_tiet_phien_ban">Chi tiết phiên bản</string>
+    <string name="khoi_luong1">%1$s %2$s</string>
+    <string name="max_quantity">999,999.999</string>
+    <string name="quantity_decimal">%1$s.%2$s</string>
+    <string name="quantity">%1$s%2$s</string>
+
 </resources>

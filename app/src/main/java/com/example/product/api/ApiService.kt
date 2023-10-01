@@ -1,6 +1,4 @@
 package com.example.product.api
-
-import com.example.product.api.dto.OrderDTO
 import com.example.product.model.ProductResponse
 import com.example.product.model.VariantResponse
 import com.example.product.api.response.OrderResponse
@@ -15,24 +13,23 @@ import retrofit2.http.Query
 
 interface ApiService {
 
-    @GET("admin/products.json")
-    fun getListProduct(@Query("page") page : Int,@Query("limit") limit : Int) : Observable<ProductResponse>
+    @GET(ApiConfig.PRODUCT_LIST_URL)
+    fun getListProduct(@Query("page") page : Int,@Query("limit") limit : Int,@Query("query") query: String) : Observable<ProductResponse>
 
-    @GET("admin/variants/search.json")
-    fun getListVariants(@Query("page") page: Int,@Query("limit") limit : Int) : Observable<VariantResponse>
+    @GET(ApiConfig.VARIANT_LIST_URL)
+    fun getListVariants(@Query("page") page: Int,@Query("limit") limit : Int,@Query("query") query: String) : Observable<VariantResponse>
 
-    @GET("admin/products/{id}.json")
+    @GET(ApiConfig.PRODUCT_URL)
     fun getDetailProduct(@Path("id") id: Int) : Observable<ProductResponse>
 
-    @GET("admin/products/{product_id}/variants/{variant_id}.json")
+    @GET(ApiConfig.VARIANT_URL)
     fun getDetailVariant(@Path("product_id") productId: Int,@Path("variant_id") variantId: Int) : Observable<VariantResponse>
 
-    @GET("admin/products.json")
+    @GET(ApiConfig.PRODUCT_LIST_URL)
     fun findProduct(@Query("query") query: String) : Observable<ProductResponse>
 
-    @GET("admin/variants/search.json")
+    @GET(ApiConfig.VARIANT_LIST_URL)
     fun findVariant(@Query("query") query :String) :Observable<VariantResponse>
-
 
     @Headers("X-Sapo-Client: iOS"
         ,"X-Sapo-LocationId:286483","Content-Type:application/json")

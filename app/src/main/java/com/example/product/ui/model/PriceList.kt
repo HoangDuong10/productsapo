@@ -5,7 +5,7 @@ import java.io.Serializable
 class PriceList : Serializable {
     var code: String?=null
     constructor()
-    fun isretailPrice():Boolean {
+    fun isRetailPrice():Boolean {
         return code == "BANLE"
     }
     fun isWholesalePrice():Boolean{
